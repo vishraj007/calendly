@@ -20,6 +20,7 @@ export const CreateEventTypeSchema = z.object({
   slug: SlugString,
   duration: z.number().int().positive().max(480),
   description: z.string().max(500).optional(),
+  isActive: z.boolean().default(true),
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default("#0069ff"),
   location: z.string().max(100).default("Google Meet"),
   bufferBefore: z.number().int().min(0).max(60).default(0),

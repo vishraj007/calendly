@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 /* ──────────────────────────────────────────────
    Enhanced Calendly-style email service
@@ -158,8 +158,9 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
     return;
   }
 
-  const dateStr = format(data.startTime, "EEEE, MMMM d, yyyy");
-  const timeStr = `${format(data.startTime, "h:mm a")} – ${format(data.endTime, "h:mm a")}`;
+  const tz = data.timezone || "UTC";
+  const dateStr = formatInTimeZone(data.startTime, tz, "EEEE, MMMM d, yyyy");
+  const timeStr = `${formatInTimeZone(data.startTime, tz, "h:mm a")} – ${formatInTimeZone(data.endTime, tz, "h:mm a")}`;
 
   const rows = [
     emailRow("Event", `<strong>${data.eventName}</strong>`),
@@ -200,8 +201,9 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
     return;
   }
 
-  const dateStr = format(data.startTime, "EEEE, MMMM d, yyyy");
-  const timeStr = `${format(data.startTime, "h:mm a")} – ${format(data.endTime, "h:mm a")}`;
+  const tz = data.timezone || "UTC";
+  const dateStr = formatInTimeZone(data.startTime, tz, "EEEE, MMMM d, yyyy");
+  const timeStr = `${formatInTimeZone(data.startTime, tz, "h:mm a")} – ${formatInTimeZone(data.endTime, tz, "h:mm a")}`;
 
   const rows = [
     emailRow("Event", `<strong>${data.eventName}</strong>`),
@@ -239,14 +241,16 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
     return;
   }
 
-  const newDateStr = format(data.startTime, "EEEE, MMMM d, yyyy");
-  const newTimeStr = `${format(data.startTime, "h:mm a")} – ${format(data.endTime, "h:mm a")}`;
+  const tz = data.timezone || "UTC";
+  const newDateStr = formatInTimeZone(data.startTime, tz, "EEEE, MMMM d, yyyy");
+  const newTimeStr = `${formatInTimeZone(data.startTime, tz, "h:mm a")} – ${formatInTimeZone(data.endTime, tz, "h:mm a")}`;
 
   const prevInfo = data.previousStartTime
     ? emailRow(
         "Previous",
-        `<s>${format(data.previousStartTime, "MMM d, h:mm a")} – ${format(
+        `<s>${formatInTimeZone(data.previousStartTime, tz, "MMM d, h:mm a")} – ${formatInTimeZone(
           data.previousEndTime!,
+          tz,
           "h:mm a"
         )}</s>`
       )

@@ -17,7 +17,7 @@ import { LOCATION_OPTIONS, generateSlug } from "@/lib/utils";
 import type { EventType } from "@/lib/types";
 import toast from "react-hot-toast";
 
-type Tab = "event-types" | "single-use" | "polls";
+type Tab = "event-types" | "single-use";
 type PanelMode = "create" | "edit" | "preview" | null;
 
 export default function EventTypesPage() {
@@ -107,7 +107,6 @@ function EventTypesPageInner() {
       const created = await eventTypesApi.create({ ...data, slug });
       toast.success("Event type created!");
       await load();
-      // After creating → open preview mode
       setPanelEvent(created);
       setPanelMode("preview");
     } catch (e: unknown) {
@@ -197,7 +196,6 @@ function EventTypesPageInner() {
         {([
           { key: "event-types", label: "Event types" },
           { key: "single-use", label: "Single-use links" },
-          { key: "polls", label: "Meeting polls" },
         ] as const).map(({ key, label }) => (
           <button
             key={key}
@@ -367,21 +365,6 @@ function EventTypesPageInner() {
         </div>
       )}
 
-      {tab === "polls" && (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">🗳️</span>
-          </div>
-          <h3 className="font-bold text-gray-900 mb-1">Find the best time for everyone</h3>
-          <p className="text-sm text-gray-500 max-w-md mx-auto">
-            Gather everyone&apos;s availability to pick the best time for the group.
-          </p>
-          <Button className="mt-4">
-            <Plus className="w-4 h-4" /> Create meeting poll
-          </Button>
-        </div>
-      )}
-
       {/* ═══════════════════════════════════════════
           Slide-out panel: Create / Edit / Preview
           ═══════════════════════════════════════════ */}
@@ -403,10 +386,6 @@ function EventTypesPageInner() {
 
 /* ═══════════════════════════════════════════════════════
    SlideOutPanel — Calendly-style
-   Modes:
-   - "create"  → name input + sections → Create button
-   - "edit"    → same sections → Save changes button
-   - "preview" → booking page iframe on left + panel on right
    ═══════════════════════════════════════════════════════ */
 function SlideOutPanel({
   mode,
@@ -432,7 +411,6 @@ function SlideOutPanel({
   const [location, setLocation] = useState(eventType?.location || "Google Meet");
   const [color, setColor] = useState(eventType?.color || "#7b2ff7");
 
-  // Collapsible sections
   const [durationOpen, setDurationOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(true);
   const [availabilityOpen, setAvailabilityOpen] = useState(false);
@@ -452,7 +430,6 @@ function SlideOutPanel({
     }
   };
 
-  // Preview mode — full-width overlay with iframe + panel
   if (isPreview && eventType) {
     return (
       <>
@@ -460,7 +437,6 @@ function SlideOutPanel({
         <div className="fixed inset-0 z-50 flex animate-fade-in">
           {/* Left — Preview area */}
           <div className="flex-1 flex flex-col bg-white">
-            {/* Preview top bar */}
             <div className="h-14 border-b border-gray-200 flex items-center justify-between px-6 bg-gray-900">
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: eventType.color }} />
@@ -478,9 +454,7 @@ function SlideOutPanel({
               </div>
             </div>
 
-            {/* Preview content — actual booking page in iframe */}
             <div className="flex-1 bg-gray-100 overflow-hidden">
-              {/* Info banner */}
               <div className="bg-gray-800 text-white text-xs text-center py-2.5 flex items-center justify-center gap-2">
                 <span className="font-semibold">This is a preview.</span>
                 <span>To book an event, share the link with your invitees.</span>
@@ -502,16 +476,13 @@ function SlideOutPanel({
 
           {/* Right — Edit panel */}
           <div className="w-[380px] bg-white border-l border-gray-200 flex flex-col shrink-0">
-            {/* Close button */}
             <div className="flex items-center justify-end px-4 py-3 border-b border-gray-100">
               <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto">
-              {/* Event type header */}
               <div className="px-6 py-4 border-b border-gray-100">
                 <p className="text-xs font-semibold text-[#006bff] mb-1.5">Event type</p>
                 <div className="flex items-center gap-2">
@@ -524,7 +495,6 @@ function SlideOutPanel({
                 <p className="text-xs text-gray-400 mt-0.5">One-on-One</p>
               </div>
 
-              {/* Duration */}
               <SectionRow label="Duration" defaultOpen={false}>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4 text-gray-400" />
@@ -532,7 +502,6 @@ function SlideOutPanel({
                 </div>
               </SectionRow>
 
-              {/* Location */}
               <SectionRow label="Location" defaultOpen={true}>
                 <div className="flex gap-3 flex-wrap">
                   {LOCATION_OPTIONS.slice(0, 3).map((loc) => {
@@ -558,12 +527,10 @@ function SlideOutPanel({
                 </div>
               </SectionRow>
 
-              {/* Availability */}
               <SectionRow label="Availability" defaultOpen={false}>
                 <p className="text-sm text-gray-600">Weekdays, 9 am - 5 pm</p>
               </SectionRow>
 
-              {/* Host */}
               <SectionRow label="Host" defaultOpen={false}>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">V</div>
@@ -572,7 +539,6 @@ function SlideOutPanel({
               </SectionRow>
             </div>
 
-            {/* Footer */}
             <div className="border-t border-gray-200 px-6 py-3 flex items-center justify-between bg-white">
               <button
                 onClick={() => onSwitchToEdit(eventType)}
@@ -602,25 +568,20 @@ function SlideOutPanel({
     );
   }
 
-  // Create / Edit mode — right slide-out panel only
   return (
     <>
       <div className="fixed inset-0 z-40 bg-black/20" onClick={onClose} />
       <div className="fixed top-0 right-0 h-full w-[400px] bg-white border-l border-gray-200 shadow-2xl z-50 flex flex-col animate-slide-in">
-        {/* Close */}
         <div className="flex items-center justify-end px-4 py-3 border-b border-gray-100">
           <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* Event type name + color */}
           <div className="px-6 py-5 border-b border-gray-100">
             <p className="text-xs font-semibold text-[#006bff] mb-2">Event type</p>
             <div className="flex items-center gap-3">
-              {/* Color picker dropdown */}
               <div className="relative group">
                 <button
                   className="w-7 h-7 rounded-full ring-2 ring-offset-1 ring-gray-200 shrink-0 transition-transform hover:scale-110"
@@ -649,7 +610,6 @@ function SlideOutPanel({
             <p className="text-xs text-gray-400 mt-1.5">One-on-One</p>
           </div>
 
-          {/* Duration */}
           <div className="border-b border-gray-100">
             <button
               onClick={() => setDurationOpen(!durationOpen)}
@@ -685,7 +645,6 @@ function SlideOutPanel({
             )}
           </div>
 
-          {/* Location */}
           <div className="border-b border-gray-100">
             <button
               onClick={() => setLocationOpen(!locationOpen)}
@@ -726,7 +685,6 @@ function SlideOutPanel({
             )}
           </div>
 
-          {/* Availability */}
           <div className="border-b border-gray-100">
             <button
               onClick={() => setAvailabilityOpen(!availabilityOpen)}
@@ -740,7 +698,6 @@ function SlideOutPanel({
             </div>
           </div>
 
-          {/* Host */}
           <div className="border-b border-gray-100">
             <button
               onClick={() => setHostOpen(!hostOpen)}
@@ -756,7 +713,6 @@ function SlideOutPanel({
           </div>
         </div>
 
-        {/* Footer */}
         <div className="border-t border-gray-200 px-6 py-4 flex items-center justify-end gap-3 bg-white">
           {!isCreate && eventType && (
             <a
@@ -787,7 +743,6 @@ function SlideOutPanel({
   );
 }
 
-/* ── Shared collapsible section for preview panel ── */
 function SectionRow({
   label,
   defaultOpen,

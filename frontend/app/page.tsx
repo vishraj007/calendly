@@ -389,20 +389,6 @@ function Navbar() {
             href="/onboarding"
             style={{
               fontSize: 15,
-              fontWeight: 600,
-              color: "#374151",
-              textDecoration: "none",
-              padding: "8px 16px",
-              borderRadius: 8,
-              transition: "color 0.2s",
-            }}
-          >
-            Get started free
-          </Link>
-          <Link
-            href="/onboarding"
-            style={{
-              fontSize: 15,
               fontWeight: 700,
               color: "white",
               background: "#0069ff",

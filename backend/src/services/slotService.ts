@@ -1,3 +1,4 @@
+// Slot generation service — updated to show ALL slots with availability status
 import { parse, addMinutes, isBefore, isAfter, format } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
 import { prisma } from "../lib/prisma";
@@ -23,7 +24,8 @@ interface GenerateSlotsOptions {
 
 /**
  * Pure function — no DB calls, fully testable.
- * Returns ALL slots within the window, marking booked/past ones as unavailable.
+ * Returns ALL slots within the availability window.
+ * Past and booked slots are marked available=false instead of being omitted.
  */
 function generateSlots({
   availStart,

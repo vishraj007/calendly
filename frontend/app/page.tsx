@@ -60,7 +60,7 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/onboarding"
-            className="text-sm font-semibold text-white bg-[#0069ff] hover:bg-[#0052cc] px-5 py-2.5 rounded-md transition-all"
+            className="text-sm font-semibold text-white bg-[#0069ff] hover:bg-[#0052cc] px-5 py-2.5 rounded-full transition-all"
           >
             Get started free
           </Link>
@@ -91,28 +91,42 @@ function Navbar() {
 /* ─────────────── Hero ─────────────── */
 function Hero() {
   return (
-    <section className="pt-20 bg-white">
+    <section className="pt-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-20 grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <h1 className="text-5xl lg:text-6xl font-extrabold text-[#1a1a2e] leading-[1.1] mb-6 tracking-tight">
-            Easy scheduling<br />ahead
+            Easy<br />scheduling<br />ahead
           </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-            Join 20 million professionals who easily book meetings with Schedulr — the modern scheduling tool that eliminates back-and-forth.
+          <p className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
+            Join 20 million professionals who easily book meetings with the <strong>#1 scheduling tool</strong>.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="flex flex-col gap-3 mb-6 max-w-xs">
             <Link
               href="/onboarding"
-              className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-[#0052cc] transition-all shadow-md"
+              className="inline-flex items-center justify-center gap-3 bg-[#0069ff] text-white text-base font-semibold px-6 py-3.5 rounded-full hover:bg-[#0052cc] transition-all shadow-md hover:shadow-lg"
             >
-              Get started free
+              <svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Sign up with Google
+            </Link>
+            <Link
+              href="/onboarding"
+              className="inline-flex items-center justify-center gap-3 bg-[#1a1a2e] text-white text-base font-semibold px-6 py-3.5 rounded-full hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 23 23"><path fill="#f25022" d="M0 0h11v11H0z"/><path fill="#7fba00" d="M12 0h11v11H12z"/><path fill="#00a4ef" d="M0 12h11v11H0z"/><path fill="#ffb900" d="M12 12h11v11H12z"/></svg>
+              Sign up with Microsoft
             </Link>
           </div>
-          <p className="text-sm text-gray-500">No credit card required</p>
         </div>
 
-        <div className="flex justify-center lg:justify-end">
-          <BookingPreview />
+        {/* Right: Booking preview + decorative blobs */}
+        <div className="relative flex justify-center lg:justify-end">
+          {/* Decorative blobs */}
+          <div className="absolute -top-16 -right-16 w-72 h-72 bg-gradient-to-br from-pink-400 to-fuchsia-500 rounded-full opacity-20 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-10 right-20 w-56 h-56 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full opacity-15 blur-2xl pointer-events-none" />
+          <div className="absolute top-10 -right-8 w-40 h-40 bg-gradient-to-br from-fuchsia-500 to-pink-300 rounded-full opacity-25 blur-xl pointer-events-none" />
+          <div className="relative z-10">
+            <BookingPreview />
+          </div>
         </div>
       </div>
 
@@ -192,35 +206,37 @@ function BookingPreview() {
   const times = ["10:00am", "11:00am", "1:00pm", "2:30pm", "4:00pm"];
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+    <div className="w-full max-w-[680px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
       <div className="bg-[#0069ff] px-6 py-3 text-center">
         <p className="text-white text-xs font-semibold tracking-wide">Share your booking page</p>
       </div>
 
-      <div className="flex divide-x divide-gray-100">
-        <div className="w-44 shrink-0 p-5 bg-gray-50">
+      <div className="flex">
+        {/* Left: Event details */}
+        <div className="w-[150px] shrink-0 p-4 border-r border-gray-100">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 bg-[#0069ff] rounded-lg flex items-center justify-center">
-              <Calendar className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 bg-[#0069ff] rounded-lg flex items-center justify-center">
+              <Calendar className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-xs font-bold text-gray-800">Schedulr</span>
+            <span className="text-[11px] font-bold text-gray-800">ACME Inc.</span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 mb-3 flex items-center justify-center text-white text-sm font-bold">F</div>
-          <p className="text-xs text-gray-500 mb-1">Fatima Sy</p>
-          <p className="text-sm font-bold text-gray-900 mb-4">Client Check-in</p>
-          <div className="flex items-center gap-1.5 mb-2">
-            <Clock className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-xs text-gray-600">30 min</span>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 mb-2 flex items-center justify-center text-white text-xs font-bold">V</div>
+          <p className="text-[11px] text-gray-500 mb-0.5">Vishal Rawat</p>
+          <p className="text-sm font-bold text-gray-900 mb-3">Client Check-in</p>
+          <div className="flex items-center gap-1 mb-1.5">
+            <Clock className="w-3 h-3 text-gray-400" />
+            <span className="text-[11px] text-gray-600">30 min</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Video className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-xs text-gray-600">Zoom</span>
+          <div className="flex items-center gap-1">
+            <Video className="w-3 h-3 text-gray-400" />
+            <span className="text-[11px] text-gray-600">Zoom</span>
           </div>
         </div>
 
-        <div className="flex-1 p-5">
-          <p className="text-xs font-bold text-gray-700 mb-3">Select a Date & Time</p>
-          <div className="flex items-center justify-between mb-3">
+        {/* Center: Calendar */}
+        <div className="flex-1 p-4 border-r border-gray-100">
+          <p className="text-xs font-bold text-gray-700 mb-2">Select a Date & Time</p>
+          <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-bold text-gray-800">April 2026</span>
             <div className="flex gap-1">
               <button className="w-5 h-5 bg-gray-100 rounded text-gray-400 text-xs flex items-center justify-center">‹</button>
@@ -228,11 +244,11 @@ function BookingPreview() {
             </div>
           </div>
 
-          <div className="grid grid-cols-7 gap-0.5 text-center text-xs text-gray-400 mb-2 font-semibold">
-            {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => <div key={i}>{d}</div>)}
+          <div className="grid grid-cols-7 gap-0.5 text-center text-[10px] text-gray-400 mb-1.5 font-semibold">
+            {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((d, i) => <div key={i}>{d}</div>)}
           </div>
 
-          <div className="grid grid-cols-7 gap-0.5 text-center text-xs mb-4">
+          <div className="grid grid-cols-7 gap-0.5 text-center text-xs mb-3">
             {[...Array(3)].map((_, i) => <div key={`e${i}`} />)}
             {Array.from({ length: 30 }, (_, i) => {
               const day = i + 1;
@@ -242,9 +258,9 @@ function BookingPreview() {
                 <button
                   key={day}
                   onClick={() => isAvail && setSelectedDay(day)}
-                  className={`w-7 h-7 flex items-center justify-center rounded-full mx-auto transition-all text-xs
+                  className={`w-6 h-6 flex items-center justify-center rounded-full mx-auto transition-all text-[11px]
                     ${isSelected ? "bg-[#0069ff] text-white font-bold" : ""}
-                    ${!isSelected && isAvail ? "text-gray-800 font-semibold hover:bg-blue-50 cursor-pointer border border-[#0069ff]" : ""}
+                    ${!isSelected && isAvail ? "text-[#0069ff] font-semibold hover:bg-blue-50 cursor-pointer" : ""}
                     ${!isSelected && !isAvail ? "text-gray-300" : ""}
                   `}
                 >
@@ -254,41 +270,47 @@ function BookingPreview() {
             })}
           </div>
 
-          <div className="border-t border-gray-100 pt-3">
-            <p className="text-xs font-bold text-gray-700 mb-2">
-              {selectedDay ? `Tue, Apr ${selectedDay}` : "Select a date"}
+          <div className="border-t border-gray-100 pt-2">
+            <p className="text-[11px] text-gray-600 flex items-center gap-1">
+              <span className="font-semibold">Time zone</span>
             </p>
-            <div className="flex flex-col gap-1.5">
-              {times.map((t) => (
-                <div key={t} className="flex gap-1.5 items-center">
-                  <button
-                    onClick={() => setSelectedTime(t)}
-                    className={`flex-1 text-xs font-semibold py-1.5 rounded border transition-all ${
-                      selectedTime === t
-                        ? "bg-[#1a1a2e] text-white border-[#1a1a2e]"
-                        : "border-[#0069ff] text-[#0069ff] hover:bg-blue-50"
-                    }`}
-                  >
-                    {t}
-                  </button>
-                  {selectedTime === t && (
-                    <Link
-                      href="/onboarding"
-                      className="bg-[#0069ff] text-white text-xs font-bold px-3 py-1.5 rounded border border-[#0069ff] hover:bg-[#0052cc] transition-all"
-                    >
-                      Confirm
-                    </Link>
-                  )}
-                </div>
-              ))}
+            <div className="flex items-center gap-1 mt-0.5">
+              <Globe className="w-3 h-3 text-gray-400" />
+              <span className="text-[11px] text-gray-500">India Standard Time ▾</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-gray-50 border-t border-gray-100 px-5 py-2.5 flex items-center gap-1.5">
-        <Globe className="w-3.5 h-3.5 text-gray-400" />
-        <span className="text-xs text-gray-500">Eastern time – US & Canada</span>
+        {/* Right: Time slots */}
+        <div className="w-[140px] shrink-0 p-4">
+          <p className="text-xs font-bold text-gray-700 mb-3">
+            Monday, Apr {selectedDay}
+          </p>
+          <div className="flex flex-col gap-1.5">
+            {times.map((t) => (
+              <div key={t} className="flex gap-1 items-center">
+                <button
+                  onClick={() => setSelectedTime(t)}
+                  className={`flex-1 text-[11px] font-semibold py-1.5 rounded border transition-all ${
+                    selectedTime === t
+                      ? "bg-[#1a1a2e] text-white border-[#1a1a2e]"
+                      : "border-[#0069ff] text-[#0069ff] hover:bg-blue-50"
+                  }`}
+                >
+                  {t}
+                </button>
+                {selectedTime === t && (
+                  <Link
+                    href="/onboarding"
+                    className="bg-[#0069ff] text-white text-[10px] font-bold px-2 py-1.5 rounded hover:bg-[#0052cc] transition-all"
+                  >
+                    Confirm
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -297,16 +319,16 @@ function BookingPreview() {
 /* ─────────────── Value Props ─────────────── */
 function ValueProps() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-        <h2 className="text-4xl lg:text-5xl font-extrabold text-[#1a1a2e] mb-6 leading-tight">
-          Schedulr makes<br />scheduling simple
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+        <h2 className="text-4xl lg:text-[56px] font-extrabold text-[#1a1a2e] mb-6 leading-[1.1] tracking-tight">
+          More than a<br />scheduling link
         </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-          Simple enough for individual users, powerful enough to meet the needs of growing teams.
+        <p className="text-lg text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed">
+          Schedulr&apos;s functionality goes way beyond just a scheduling link, with customizable, automated features to help you and your team achieve goals faster.
         </p>
-        <Link href="/onboarding" className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-[#0052cc] transition-all">
-          Get started free
+        <Link href="/onboarding" className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-[#0052cc] transition-all">
+          Sign up for free
         </Link>
       </div>
     </section>
@@ -405,46 +427,72 @@ function HowItWorks() {
 }
 
 /* ─────────────── Integrations ─────────────── */
-const INTEGRATIONS = [
-  { name: "Google Calendar", emoji: "📅", desc: "Sync your availability" },
-  { name: "Google Meet", emoji: "🎥", desc: "Auto-generate links" },
-  { name: "Zoom", emoji: "📹", desc: "Auto-generate links" },
-  { name: "Microsoft Teams", emoji: "💼", desc: "Virtual meetings" },
-  { name: "Outlook", emoji: "📧", desc: "Calendar sync" },
-  { name: "Slack", emoji: "💬", desc: "Meeting notifications" },
+const INTEGRATION_ICONS = [
+  { name: "Zoom", bg: "#2D8CFF" },
+  { name: "Salesforce", bg: "#00A1E0" },
+  { name: "Google Cal", bg: "#4285F4" },
+  { name: "Slack", bg: "#4A154B" },
+  { name: "Teams", bg: "#6264A7" },
+  { name: "Gmail", bg: "#EA4335" },
+  { name: "Outlook", bg: "#0078D4" },
+  { name: "Chrome", bg: "#4285F4" },
+  { name: "Webex", bg: "#00bceb" },
+  { name: "HubSpot", bg: "#FF7A59" },
+  { name: "Zapier", bg: "#FF4F00" },
+  { name: "LinkedIn", bg: "#0A66C2" },
+  { name: "Stripe", bg: "#635BFF" },
+  { name: "Notion", bg: "#000" },
+  { name: "Intercom", bg: "#1F8DED" },
+  { name: "PayPal", bg: "#003087" },
+  { name: "Calendly", bg: "#006BFF" },
+  { name: "Figma", bg: "#F24E1E" },
 ];
 
 function Integrations() {
   return (
-    <section id="integrations" className="py-20 lg:py-28 bg-[#f8f9ff]">
+    <section id="integrations" className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-10">
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4 lg:mb-0">
+            Connect Schedulr to the<br />tools you already use
+          </h2>
           <div>
-            <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">Integrations</p>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4">
-              Connect Schedulr to the tools you already use
-            </h2>
-            <p className="text-gray-600 text-lg mb-6">Boost productivity with seamless integrations.</p>
-            <div className="flex flex-wrap gap-2 mb-8">
-              {["Google Calendar", "Google Meet", "Zoom"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 bg-blue-50 text-[#0069ff] text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-100">
-                  <Check className="w-3 h-3" /> {t}
-                </span>
-              ))}
-            </div>
-            <Link href="/onboarding" className="inline-flex items-center gap-2 text-[#0069ff] font-semibold text-sm hover:underline">
+            <p className="text-gray-600 text-base mb-2">Boost productivity with 100+ integrations</p>
+            <Link href="/onboarding" className="inline-flex items-center gap-2 text-[#1a1a2e] font-bold text-sm hover:text-[#0069ff] transition-colors">
               View all integrations <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {INTEGRATIONS.map((i) => (
-              <div key={i.name} className="bg-white border border-gray-200 rounded-2xl p-4 flex flex-col items-center gap-2 hover:shadow-md hover:border-blue-200 transition-all group cursor-pointer">
-                <span className="text-3xl group-hover:scale-110 transition-transform">{i.emoji}</span>
-                <span className="text-xs font-bold text-gray-800 text-center">{i.name}</span>
-                <span className="text-xs text-gray-400 text-center">{i.desc}</span>
+        {/* Icon grid */}
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-9 gap-4 mb-10">
+          {INTEGRATION_ICONS.map((item) => (
+            <div key={item.name} className="bg-gray-50 border border-gray-100 rounded-xl p-4 flex items-center justify-center hover:shadow-md hover:border-gray-200 transition-all group cursor-pointer aspect-square">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-xs font-bold group-hover:scale-110 transition-transform" style={{ backgroundColor: item.bg }}>
+                {item.name.slice(0, 2).toUpperCase()}
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Suite cards */}
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-all group cursor-pointer">
+            <div className="flex items-center justify-between mb-4">
+              <svg className="w-10 h-10" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#0069ff] transition-colors -rotate-45" />
+            </div>
+            <h3 className="text-lg font-bold text-[#1a1a2e] mb-2">Google suite</h3>
+            <p className="text-sm text-gray-600">Get your job done faster by connecting Schedulr to Google Calendar, Meet, Analytics, and more.</p>
+          </div>
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md transition-all group cursor-pointer">
+            <div className="flex items-center justify-between mb-4">
+              <svg className="w-10 h-10" viewBox="0 0 23 23"><path fill="#f25022" d="M0 0h11v11H0z"/><path fill="#7fba00" d="M12 0h11v11H12z"/><path fill="#00a4ef" d="M0 12h11v11H0z"/><path fill="#ffb900" d="M12 12h11v11H12z"/></svg>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#0069ff] transition-colors -rotate-45" />
+            </div>
+            <h3 className="text-lg font-bold text-[#1a1a2e] mb-2">Microsoft suite</h3>
+            <p className="text-sm text-gray-600">Make your day easier with Schedulr integrations for Microsoft Teams, Outlook, Azure SSO, and more.</p>
           </div>
         </div>
       </div>
@@ -716,13 +764,35 @@ function PricingCard({ name, desc, price, priceNote, cta, ctaStyle, features, ba
   );
 }
 
+/* ─────────────── Security ─────────────── */
+function Security() {
+  return (
+    <section className="py-20 lg:py-28 bg-[#f8f9ff]">
+      <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+        <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Shield className="w-8 h-8 text-[#0069ff]" />
+        </div>
+        <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4">
+          Built to keep your<br />organization secure
+        </h2>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          Keep your scheduling data secure with enterprise-grade admin management, security integrations, data governance, compliance audits, and privacy protections.
+        </p>
+        <Link href="/onboarding" className="inline-flex items-center gap-2 text-[#0069ff] font-semibold text-sm hover:underline">
+          Learn more <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────── CTA ─────────────── */
 function CTA() {
   return (
     <section className="py-20 lg:py-24 bg-[#1a1a2e]">
       <div className="max-w-3xl mx-auto px-6 text-center">
         <h2 className="text-3xl lg:text-4xl font-extrabold text-white mb-4">
-          Get started in seconds — for free
+          Get started in seconds — for free.
         </h2>
         <p className="text-lg text-blue-200 mb-8 max-w-xl mx-auto">
           Join millions of professionals who use Schedulr to simplify their scheduling.
@@ -730,16 +800,16 @@ function CTA() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/onboarding"
-            className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-blue-500 transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-full hover:bg-blue-500 transition-all"
           >
             Start for free
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             href="/dashboard"
-            className="inline-flex items-center justify-center gap-2 border border-white/30 text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-white/10 transition-all"
+            className="inline-flex items-center justify-center gap-2 border border-white/30 text-white text-base font-semibold px-8 py-3.5 rounded-full hover:bg-white/10 transition-all"
           >
-            View demo
+            Get a demo
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -834,6 +904,7 @@ export default function HomePage() {
       <SocialProof />
       <CustomerResults />
       <Pricing />
+      <Security />
       <CTA />
       <Footer />
     </main>

@@ -1,18 +1,46 @@
-# Schedulr - Modern Scheduling Platform
+<div align="center">
+  
+# Schedulr
 
-**Schedulr** is a high-performance, seamless appointment scheduling tool inspired by the premium features of industry standards. It enables individual professionals and large enterprise organizations to eliminate the back-and-forth of scheduling by allowing invitees to pick their preferred time based on real-time availability.
+**The Modern, Open-Source Scheduling Platform**
 
-##  Tech Stack
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-lightgrey?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-- **Frontend:** Next.js (React), Tailwind CSS, Lucide Icons
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** PostgreSQL
-- **ORM:** Prisma
-- **Date & Time Management:** `date-fns`, `date-fns-tz`
+Schedulr is a high-performance, seamless appointment scheduling tool inspired by the premium features of industry standards like Calendly. It eliminates the back-and-forth of scheduling by allowing invitees to easily pick their preferred times based on real-time availability.
+
+</div>
+
+---
+
+## Table of Contents
+- [Features](#features)
+- [Architecture Overview](#architecture-overview)
+- [Tech Stack](#tech-stack)
+- [Database Schema](#database-schema)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [API Overview](#api-overview)
+
+---
+
+## Features
+
+- **⚡ Blazing Fast UI:** Built with Next.js App Router for optimal rendering performance.
+- **📅 Dynamic Availability:** Set weekly working hours and specific date overrides (e.g., holidays, vacations).
+- **🛡️ Conflict Prevention:** Real-time database checks prevent double-booking.
+- **🌐 Timezone Intelligence:** Seamlessly converts and formats slots based on user and invitee timezones using `date-fns-tz`.
+- **✉️ Automated Notifications:** Nodemailer integration for booking confirmations, cancellations, and reschedules.
+- **🎨 Premium Aesthetic:** High-fidelity UI using Tailwind CSS designed to mirror professional enterprise software.
+
+---
 
 ## Architecture Overview
 
-The system is split into two primary layers: a highly responsive React frontend communicating over REST API to an Express backend. The backend manages scheduling logic and persists data to PostgreSQL via Prisma ORM.
+The system utilizes a decoupled architecture, separating the client interface from the business logic layer, communicating via a RESTful API.
 
 ```mermaid
 flowchart TD
@@ -27,9 +55,31 @@ flowchart TD
     end
 ```
 
-##  Database Schema Diagram
+---
 
-Below is the representation of our Prisma architecture supporting multi-timezone booking, custom event types, and granular availability override management.
+## Tech Stack
+
+### Frontend
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **State/Fetching:** Custom Hooks & Native Fetch
+
+### Backend
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Framework:** [Express.js](https://expressjs.com/)
+- **Language:** TypeScript
+- **Time Logic:** `date-fns` & `date-fns-tz`
+
+### Database
+- **Engine:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+
+---
+
+## Database Schema Diagram
+
+The database architecture is designed to support multi-timezone booking, distinct event types, contact mapping, and granular availability management.
 
 ```mermaid
 erDiagram
@@ -57,9 +107,6 @@ erDiagram
         Boolean isActive
         String color
         String location
-        Int bufferBefore
-        Int bufferAfter
-        Json customQuestions
     }
 
     Availability {
@@ -90,7 +137,6 @@ erDiagram
         DateTime endTime
         String timezone
         Enum status "CONFIRMED | CANCELLED"
-        String meetingLink
     }
 
     Contact {
@@ -98,64 +144,88 @@ erDiagram
         String userId FK
         String name
         String email
-        String phone
-        String timezone
     }
 ```
 
-## 🛠 Setup Instructions
+---
+
+## Getting Started
 
 ### Prerequisites
-1. **Node.js** (v18+ recommended)
-2. **PostgreSQL** database (running locally or using a service like Supabase/Neon)
+- Node.js (v18 or higher)
+- PostgreSQL (Locally or via a service like Neon/Supabase)
 
-### 1. Database Setup
+### 1. Clone & Install
+Begin by installing dependencies for both the frontend and backend.
+```bash
+# Install backend dependencies
+cd backend
+npm install
 
-Create a `.env` file in the `backend/` directory:
+# Install frontend dependencies
+cd ../frontend
+npm install
+```
+
+### 2. Configure Environment Variables
+Create `.env` files in both directories. Refer to the [Environment Variables](#environment-variables) section below for the required keys.
+
+### 3. Initialize Database
+Navigate to the backend to set up your PostgreSQL schema and seed the initial data.
+```bash
+cd backend
+npx prisma generate
+npx prisma db push
+npx ts-node prisma/seed.ts
+```
+
+### 4. Run Development Servers
+Start both servers concurrently.
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+npm run dev
+# Server runs on http://localhost:5000
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+npm run dev
+# Server runs on http://localhost:3000
+```
+
+---
+
+## Environment Variables
+
+### Backend `.env`
+Located in `/backend/.env`
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/calendly_clone"
+DATABASE_URL="postgresql://user:password@localhost:5432/calendly_db"
 PORT=5000
 
-# Optional: Add SMTP credentials for email notifications
+# Email configurations (Optional, for notifications)
 SMTP_HOST=your_smtp_host
 SMTP_PORT=587
 SMTP_USER=your_smtp_user
 SMTP_PASS=your_smtp_password
 ```
 
-From the `backend` directory, initialize your database:
-```bash
-cd backend
-npm install
-npx prisma generate
-npx prisma db push
-
-# Optional: Seed the database with the default host user
-npx ts-node prisma/seed.ts
-```
-
-### 2. Start the Backend
-
-```bash
-cd backend
-npm run dev
-```
-The backend API should now be running on `http://localhost:5000`.
-
-### 3. Start the Frontend
-
-Create a `.env.local` file in the `frontend/` directory (if needed to customize API routes, defaults to port 5000):
+### Frontend `.env`
+Located in `/frontend/.env` or `/frontend/.env.local`
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
-Install dependencies and run the Next.js development server:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-The frontend should now be running on `http://localhost:3000`.
+---
 
-### 4. You're set!
-Navigate to `http://localhost:3000` to view the landing page and `http://localhost:3000/admin` or `/dashboard` to manage your availability.
+## API Overview
+
+The Express backend exposes RESTful endpoints under `/api`. Below are the core routes module boundaries:
+
+- **`/api/event-types`**: Management of meeting types (durations, limits, specifics).
+- **`/api/availability`**: Schedule generation and availability lookup (resolving base hours + overrides against existing bookings).
+- **`/api/bookings`**: Creation, rescheduling, and cancellation of meetings. Integrates heavily with `EmailService`.
+- **`/api/contacts`**: Auto-generated CRM records based on historical bookings. 

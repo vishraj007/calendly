@@ -98,7 +98,6 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
   const attendees = [eventType.user.email, inviteeEmail];
 
   if (location === "Google Meet") {
-    // Create Google Calendar event with Meet link
     const meetResult = await createGoogleMeetEvent({
       summary: `${eventType.name} — ${inviteeName}`,
       description: `Booked via Calendly\nInvitee: ${inviteeName} (${inviteeEmail})`,
@@ -109,7 +108,6 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
       calendarEventId = meetResult.eventId;
     }
   } else if (location === "Zoom") {
-    // Create Zoom meeting
     const zoomResult = await createZoomMeeting({
       topic: `${eventType.name} — ${inviteeName}`,
       start,
@@ -121,7 +119,6 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
       meetingLink = zoomResult.joinUrl;
     }
 
-    // Also create Google Calendar event for Zoom meetings
     const calResult = await createCalendarEvent({
       summary: `${eventType.name} — ${inviteeName}`,
       description: `Zoom Meeting: ${meetingLink || "pending"}\nBooked via Calendly`,
@@ -131,7 +128,6 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
       calendarEventId = calResult.eventId;
     }
   } else {
-    // For non-virtual locations, still create a Google Calendar event
     const calResult = await createCalendarEvent({
       summary: `${eventType.name} — ${inviteeName}`,
       description: `Location: ${location}\nBooked via Calendly`,
@@ -162,7 +158,6 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
     },
   });
 
-  // Auto-create/update contact for the invitee
   prisma.contact.upsert({
     where: { userId_email: { userId: eventType.userId, email: inviteeEmail } },
     create: {
@@ -190,7 +185,7 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
 // DELETE /bookings/meetings/:id — cancel
 router.delete("/meetings/:id", validate(CancelBookingSchema), asyncHandler(async (req, res) => {
   const booking = await prisma.booking.findUnique({
-    where: { id: req.params.id  as string},
+    where: { id: req.params.id as string },
     include: { ...bookingInclude, host: { select: { name: true, email: true } } },
   });
   if (!booking) { sendNotFound(res, "Booking"); return; }
@@ -201,7 +196,6 @@ router.delete("/meetings/:id", validate(CancelBookingSchema), asyncHandler(async
 
   const cancelReason = req.body?.cancelReason;
 
-  // Delete Google Calendar event if exists
   if (booking.calendarEventId) {
     deleteCalendarEvent(booking.calendarEventId).catch((e) =>
       console.error("[Google] Delete event failed:", e.message)
@@ -209,7 +203,7 @@ router.delete("/meetings/:id", validate(CancelBookingSchema), asyncHandler(async
   }
 
   const updated = await prisma.booking.update({
-    where: { id: req.params.id  as string },
+    where: { id: req.params.id as string },
     data: { status: "CANCELLED", cancelReason },
     include: { ...bookingInclude, host: { select: { name: true, email: true } } },
   });
@@ -226,6 +220,7 @@ router.delete("/meetings/:id", validate(CancelBookingSchema), asyncHandler(async
     location:     booking.eventType.location,
     meetingLink:  booking.meetingLink,
     cancelReason,
+    cancelledBy:  "host",  // ✅ FIXED: was missing, causing wrong email messages
   }).catch((e) => console.error("[Email]", e.message));
 
   sendSuccess(res, updated);
@@ -239,7 +234,7 @@ router.put("/meetings/:id/reschedule", asyncHandler(async (req, res) => {
     return;
   }
   const booking = await prisma.booking.findUnique({
-    where: { id: req.params.id as string  },
+    where: { id: req.params.id as string },
     include: {
       eventType: { select: { name: true, location: true } },
       host: { select: { name: true, email: true } },
@@ -259,7 +254,6 @@ router.put("/meetings/:id/reschedule", asyncHandler(async (req, res) => {
     return;
   }
 
-  // Update Google Calendar event if exists
   if (booking.calendarEventId) {
     updateCalendarEvent(booking.calendarEventId, {
       start, end,
@@ -268,12 +262,11 @@ router.put("/meetings/:id/reschedule", asyncHandler(async (req, res) => {
   }
 
   const updated = await prisma.booking.update({
-    where: { id: req.params.id  as string },
+    where: { id: req.params.id as string },
     data: { startTime: start, endTime: end, timezone: timezone || booking.timezone },
     include: { ...bookingInclude, host: { select: { name: true, email: true } } },
   });
 
-  // Send reschedule email
   sendRescheduleNotification({
     inviteeName:  booking.inviteeName,
     inviteeEmail: booking.inviteeEmail,

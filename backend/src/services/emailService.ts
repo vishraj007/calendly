@@ -1,17 +1,18 @@
 import { formatInTimeZone } from "date-fns-tz";
 
 interface BookingEmailData {
-  inviteeName:   string;
-  inviteeEmail:  string;
-  hostName:      string;
-  hostEmail?:    string;
-  eventName:     string;
-  startTime:     Date;
-  endTime:       Date;
-  timezone:      string;
-  location:      string;
-  meetingLink?:  string | null;
-  cancelReason?: string;
+  inviteeName:        string;
+  inviteeEmail:       string;
+  hostName:           string;
+  hostEmail?:         string;
+  eventName:          string;
+  startTime:          Date;
+  endTime:            Date;
+  timezone:           string;
+  location:           string;
+  meetingLink?:       string | null;
+  cancelReason?:      string;
+  cancelledBy?:       "host" | "invitee";
   previousStartTime?: Date;
   previousEndTime?:   Date;
 }
@@ -27,8 +28,6 @@ async function getTransporter() {
     auth: { user: SMTP_USER, pass: SMTP_PASS },
   });
 }
-
-/* ── DRY helpers ── */
 
 function emailRow(label: string, value: string): string {
   return `<div class="row"><span class="lbl">${label}</span><span>${value}</span></div>`;
@@ -90,10 +89,6 @@ function buildEmailHtml(
 </html>`;
 }
 
-/* ═══════════════════════════════════════════
-   Public API
-   ═══════════════════════════════════════════ */
-
 export async function sendBookingConfirmation(data: BookingEmailData): Promise<void> {
   const transporter = await getTransporter();
   if (!transporter) {
@@ -105,11 +100,9 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
   const dateStr = formatInTimeZone(data.startTime, tz, "EEEE, MMMM d, yyyy");
   const timeStr = `${formatInTimeZone(data.startTime, tz, "h:mm a")} – ${formatInTimeZone(data.endTime, tz, "h:mm a")}`;
 
-  // ── Email to INVITEE ──
-  // Invitee wants to know: what event, who is the HOST, when, where
   const inviteeRows = [
     emailRow("Event",    `<strong>${data.eventName}</strong>`),
-    emailRow("Host",     data.hostName),           // ✅ show HOST name to invitee
+    emailRow("Host",     data.hostName),
     emailRow("Date",     dateStr),
     emailRow("Time",     timeStr),
     emailRow("Timezone", data.timezone),
@@ -119,7 +112,7 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
   const inviteeHtml = buildEmailHtml(
     "✅",
     "Meeting Confirmed!",
-    `Your meeting with ${data.hostName} has been scheduled.`,  // ✅ host name in subtitle
+    `Your meeting with ${data.hostName} has been scheduled.`,
     inviteeRows,
     data.meetingLink
   );
@@ -133,13 +126,11 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
 
   console.log(`[Email] Confirmation → invitee: ${data.inviteeEmail}`);
 
-  // ── Email to HOST ──
-  // Host wants to know: what event, who is the INVITEE, when, where
   if (data.hostEmail) {
     const hostRows = [
       emailRow("Event",    `<strong>${data.eventName}</strong>`),
-      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),  // ✅ show INVITEE name to host
-      emailRow("Email",    data.inviteeEmail),                        // ✅ show INVITEE email to host
+      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),
+      emailRow("Email",    data.inviteeEmail),
       emailRow("Date",     dateStr),
       emailRow("Time",     timeStr),
       emailRow("Timezone", data.timezone),
@@ -149,15 +140,15 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
     const hostHtml = buildEmailHtml(
       "✅",
       "New Meeting Booked!",
-      `${data.inviteeName} has scheduled a meeting with you.`,  // ✅ invitee name in subtitle
+      `${data.inviteeName} has scheduled a meeting with you.`,
       hostRows,
       data.meetingLink
     );
 
     await transporter.sendMail({
       from:    `"Calendly" <${process.env.SMTP_USER}>`,
-      to:      data.hostEmail,                                              // ✅ send to HOST email
-      subject: `New Booking: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
+      to:      data.hostEmail,
+      subject: `New Booking: ${data.eventName} with ${data.inviteeName}`,
       html:    hostHtml,
     });
 
@@ -175,12 +166,12 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
   const tz = data.timezone || "UTC";
   const dateStr = formatInTimeZone(data.startTime, tz, "EEEE, MMMM d, yyyy");
   const timeStr = `${formatInTimeZone(data.startTime, tz, "h:mm a")} – ${formatInTimeZone(data.endTime, tz, "h:mm a")}`;
+  const cancelledByHost = data.cancelledBy === "host";
 
   // ── Cancellation email to INVITEE ──
-  // Invitee wants to know: what was cancelled and who the host was
   const inviteeRows = [
     emailRow("Event",    `<strong>${data.eventName}</strong>`),
-    emailRow("Host",     data.hostName),           // ✅ show HOST to invitee
+    emailRow("Host",     data.hostName),
     emailRow("Date",     dateStr),
     emailRow("Time",     timeStr),
     emailRow("Timezone", data.timezone),
@@ -190,7 +181,9 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
   const inviteeHtml = buildEmailHtml(
     "❌",
     "Meeting Cancelled",
-    `Your meeting with ${data.hostName} has been cancelled.`,  // ✅ host name in subtitle
+    cancelledByHost
+      ? `${data.hostName} has cancelled your meeting.`
+      : `Your meeting with ${data.hostName} has been cancelled.`,
     inviteeRows
   );
 
@@ -204,12 +197,11 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
   console.log(`[Email] Cancellation → invitee: ${data.inviteeEmail}`);
 
   // ── Cancellation email to HOST ──
-  // Host wants to know: what was cancelled and who the invitee was
   if (data.hostEmail) {
     const hostRows = [
       emailRow("Event",    `<strong>${data.eventName}</strong>`),
-      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),  // ✅ show INVITEE to host
-      emailRow("Email",    data.inviteeEmail),                        // ✅ show INVITEE email to host
+      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),
+      emailRow("Email",    data.inviteeEmail),
       emailRow("Date",     dateStr),
       emailRow("Time",     timeStr),
       emailRow("Timezone", data.timezone),
@@ -219,14 +211,18 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
     const hostHtml = buildEmailHtml(
       "❌",
       "Meeting Cancelled",
-      `${data.inviteeName} has cancelled their meeting with you.`,  // ✅ invitee name in subtitle
+      cancelledByHost
+        ? `You cancelled the meeting with ${data.inviteeName}.`
+        : `${data.inviteeName} has cancelled their meeting with you.`,
       hostRows
     );
 
     await transporter.sendMail({
       from:    `"Calendly" <${process.env.SMTP_USER}>`,
       to:      data.hostEmail,
-      subject: `Cancelled: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
+      subject: cancelledByHost
+        ? `You cancelled: ${data.eventName} with ${data.inviteeName}`
+        : `Cancelled: ${data.eventName} with ${data.inviteeName}`,
       html:    hostHtml,
     });
 
@@ -258,10 +254,9 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
       : "";
 
   // ── Reschedule email to INVITEE ──
-  // Invitee wants to know: new time and who the host is
   const inviteeRows = [
     emailRow("Event",    `<strong>${data.eventName}</strong>`),
-    emailRow("Host",     data.hostName),           // ✅ show HOST to invitee
+    emailRow("Host",     data.hostName),
     emailRow("New Date", newDateStr),
     emailRow("New Time", newTimeStr),
     emailRow("Timezone", data.timezone),
@@ -272,7 +267,7 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
   const inviteeHtml = buildEmailHtml(
     "🔄",
     "Meeting Rescheduled",
-    `Your meeting with ${data.hostName} has been rescheduled.`,  // ✅ host name in subtitle
+    `Your meeting with ${data.hostName} has been rescheduled.`,
     inviteeRows,
     data.meetingLink
   );
@@ -287,12 +282,11 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
   console.log(`[Email] Reschedule → invitee: ${data.inviteeEmail}`);
 
   // ── Reschedule email to HOST ──
-  // Host wants to know: new time and who the invitee is
   if (data.hostEmail) {
     const hostRows = [
       emailRow("Event",    `<strong>${data.eventName}</strong>`),
-      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),  // ✅ show INVITEE to host
-      emailRow("Email",    data.inviteeEmail),                        // ✅ show INVITEE email to host
+      emailRow("Invitee",  `<strong>${data.inviteeName}</strong>`),
+      emailRow("Email",    data.inviteeEmail),
       emailRow("New Date", newDateStr),
       emailRow("New Time", newTimeStr),
       emailRow("Timezone", data.timezone),
@@ -303,7 +297,7 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
     const hostHtml = buildEmailHtml(
       "🔄",
       "Meeting Rescheduled",
-      `${data.inviteeName} has rescheduled their meeting with you.`,  // ✅ invitee name in subtitle
+      `${data.inviteeName} has rescheduled their meeting with you.`,
       hostRows,
       data.meetingLink
     );
@@ -311,7 +305,7 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
     await transporter.sendMail({
       from:    `"Calendly" <${process.env.SMTP_USER}>`,
       to:      data.hostEmail,
-      subject: `Rescheduled: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
+      subject: `Rescheduled: ${data.eventName} with ${data.inviteeName}`,
       html:    hostHtml,
     });
 

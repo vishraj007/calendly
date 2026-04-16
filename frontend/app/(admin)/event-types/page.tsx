@@ -266,13 +266,13 @@ function EventTypesPageInner() {
               {filtered.map((et) => (
                 <div
                   key={et.id}
-                  className={`bg-white border rounded-xl overflow-hidden hover:shadow-sm transition-all ${
+                  className={`bg-white border rounded-xl hover:shadow-sm transition-all ${
                     panelEvent?.id === et.id ? "border-[#006bff] ring-1 ring-[#006bff]/20" : "border-gray-200"
                   }`}
                 >
                   <div className="flex items-center">
-                    {/* Color bar */}
-                    <div className="w-1.5 self-stretch" style={{ backgroundColor: et.color }} />
+                    {/* Color bar — rounded-l-xl preserves card corner clipping without overflow-hidden */}
+                    <div className="w-1.5 self-stretch rounded-l-xl" style={{ backgroundColor: et.color }} />
 
                     <div className="flex-1 p-4 flex items-center justify-between">
                       <div

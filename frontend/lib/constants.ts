@@ -40,14 +40,7 @@ export const INTEGRATION_CATEGORIES = [
 ] as const;
 
 export const DEFAULT_INTEGRATIONS: IntegrationConfig[] = [
-  {
-    id: INTEGRATION_IDS.ZOOM,
-    name: "Zoom",
-    description:
-      "Include Zoom details in your Calendly events. Automatically create unique Zoom meetings for each booking.",
-    category: "Video Conferencing",
-    connected: false,
-  },
+ 
   {
     id: INTEGRATION_IDS.GOOGLE_MEET,
     name: "Google Meet",
@@ -62,6 +55,14 @@ export const DEFAULT_INTEGRATIONS: IntegrationConfig[] = [
     description:
       "Sync your Google Calendar to check for conflicts and add new events automatically.",
     category: "Calendars",
+    connected: false,
+  },
+   {
+    id: INTEGRATION_IDS.ZOOM,
+    name: "Zoom",
+    description:
+      "Include Zoom details in your Calendly events. Automatically create unique Zoom meetings for each booking.",
+    category: "Video Conferencing",
     connected: false,
   },
   {

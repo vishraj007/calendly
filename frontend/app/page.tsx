@@ -386,7 +386,7 @@ function Navbar() {
 
         <div className="hidden md:flex" style={{ alignItems: "center", gap: 12 }}>
           <Link
-            href="/dashboard"
+            href="/onboarding"
             style={{
               fontSize: 15,
               fontWeight: 600,
@@ -397,7 +397,7 @@ function Navbar() {
               transition: "color 0.2s",
             }}
           >
-            Log in
+            Get started free
           </Link>
           <Link
             href="/onboarding"

@@ -175,8 +175,10 @@ export default function DashboardPage() {
             </div>
 
             {eventTypes.map((et) => (
-              <div
+              <Link
                 key={et.id}
+                href={`/book/${et.slug}`}
+                target="_blank"
                 className="px-6 py-3.5 flex items-center justify-between border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
@@ -193,14 +195,10 @@ export default function DashboardPage() {
                     </p>
                   </div>
                 </div>
-                <a
-                  href={`/book/${et.slug}`}
-                  target="_blank"
-                  className="text-sm text-brand-blue hover:underline"
-                >
+                <span className="text-sm text-brand-blue hover:underline">
                   /book/{et.slug}
-                </a>
-              </div>
+                </span>
+              </Link>
             ))}
           </div>
         )

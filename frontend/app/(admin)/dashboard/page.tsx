@@ -8,6 +8,59 @@ import { Link2, CalendarDays, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { EventType, Booking } from "@/lib/types";
 
+// ─── Skeleton helpers ────────────────────────────────────────────────────────
+
+function Skeleton({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-lg bg-gray-200 ${className}`}
+    />
+  );
+}
+
+function StatCardSkeleton() {
+  return (
+    <div className="card-hover p-6 flex items-center justify-between pointer-events-none">
+      <div className="space-y-3">
+        <Skeleton className="h-4 w-28" />
+        <Skeleton className="h-9 w-16" />
+      </div>
+      <Skeleton className="w-12 h-12 rounded-xl" />
+    </div>
+  );
+}
+
+function BookingLinksSkeleton() {
+  return (
+    <div className="card">
+      {/* header */}
+      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <Skeleton className="h-5 w-36" />
+        <Skeleton className="h-4 w-20" />
+      </div>
+
+      {/* rows */}
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="px-6 py-4 flex items-center justify-between border-b border-gray-50 last:border-0"
+        >
+          <div className="flex items-center gap-3">
+            <Skeleton className="w-3 h-3 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-3 w-24" />
+            </div>
+          </div>
+          <Skeleton className="h-4 w-28" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Stat card ────────────────────────────────────────────────────────────────
+
 function StatCard({
   label,
   value,
@@ -39,10 +92,12 @@ function StatCard({
   );
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function DashboardPage() {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
-  const [meetings,   setMeetings]   = useState<Booking[]>([]);
-  const [loading,    setLoading]    = useState(true);
+  const [meetings, setMeetings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([eventTypesApi.list(), bookingsApi.getMeetings()])
@@ -68,70 +123,87 @@ export default function DashboardPage() {
         subtitle="Here's what's happening with your schedule."
       />
 
-      {/* Stats */}
+      {/* ── Stats ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-        <StatCard
-          label="Event Types"
-          value={loading ? "—" : eventTypes.length}
-          icon={Link2}
-          color="bg-blue-50 text-brand-blue"
-          href="/event-types"
-        />
-        <StatCard
-          label="Upcoming Meetings"
-          value={loading ? "—" : upcoming}
-          icon={CalendarDays}
-          color="bg-green-50 text-green-600"
-          href="/meetings"
-        />
-        <StatCard
-          label="Past Meetings"
-          value={loading ? "—" : past}
-          icon={Clock}
-          color="bg-purple-50 text-purple-600"
-          href="/meetings"
-        />
+        {loading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : (
+          <>
+            <StatCard
+              label="Event Types"
+              value={eventTypes.length}
+              icon={Link2}
+              color="bg-blue-50 text-brand-blue"
+              href="/event-types"
+            />
+            <StatCard
+              label="Upcoming Meetings"
+              value={upcoming}
+              icon={CalendarDays}
+              color="bg-green-50 text-green-600"
+              href="/meetings"
+            />
+            <StatCard
+              label="Past Meetings"
+              value={past}
+              icon={Clock}
+              color="bg-purple-50 text-purple-600"
+              href="/meetings"
+            />
+          </>
+        )}
       </div>
 
-      {/* Booking links */}
-      {eventTypes.length > 0 && (
-        <div className="card">
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="font-bold text-gray-900">Your Booking Links</h2>
-            <Link
-              href="/event-types"
-              className="text-sm text-brand-blue hover:underline flex items-center gap-1"
-            >
-              Manage <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-          {eventTypes.map((et) => (
-            <div
-              key={et.id}
-              className="px-6 py-3.5 flex items-center justify-between border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ backgroundColor: et.color }}
-                />
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{et.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {et.duration} min · {et.location}
-                  </p>
-                </div>
-              </div>
-              <a
-                href={`/book/${et.slug}`}
-                target="_blank"
-                className="text-sm text-brand-blue hover:underline"
+      {/* ── Booking links ── */}
+      {loading ? (
+        <BookingLinksSkeleton />
+      ) : (
+        eventTypes.length > 0 && (
+          <div className="card">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="font-bold text-gray-900">Your Booking Links</h2>
+              <Link
+                href="/event-types"
+                className="text-sm text-brand-blue hover:underline flex items-center gap-1"
               >
-                /book/{et.slug}
-              </a>
+                Manage <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-          ))}
-        </div>
+
+            {eventTypes.map((et) => (
+              <div
+                key={et.id}
+                className="px-6 py-3.5 flex items-center justify-between border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: et.color }}
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {et.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {et.duration} min · {et.location}
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href={`/book/${et.slug}`}
+                  target="_blank"
+                  className="text-sm text-brand-blue hover:underline"
+                >
+                  /book/{et.slug}
+                </a>
+              </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   );

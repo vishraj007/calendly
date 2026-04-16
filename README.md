@@ -1,18 +1,8 @@
-<div align="center">
-  
 # Schedulr
 
 **The Modern, Open-Source Scheduling Platform**
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.x-lightgrey?style=for-the-badge&logo=express)](https://expressjs.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-
 Schedulr is a high-performance, seamless appointment scheduling tool inspired by the premium features of industry standards like Calendly. It eliminates the back-and-forth of scheduling by allowing invitees to easily pick their preferred times based on real-time availability.
-
-</div>
 
 ---
 
@@ -29,12 +19,12 @@ Schedulr is a high-performance, seamless appointment scheduling tool inspired by
 
 ## Features
 
-- **⚡ Blazing Fast UI:** Built with Next.js App Router for optimal rendering performance.
-- **📅 Dynamic Availability:** Set weekly working hours and specific date overrides (e.g., holidays, vacations).
-- **🛡️ Conflict Prevention:** Real-time database checks prevent double-booking.
-- **🌐 Timezone Intelligence:** Seamlessly converts and formats slots based on user and invitee timezones using `date-fns-tz`.
-- **✉️ Automated Notifications:** Nodemailer integration for booking confirmations, cancellations, and reschedules.
-- **🎨 Premium Aesthetic:** High-fidelity UI using Tailwind CSS designed to mirror professional enterprise software.
+- **Blazing Fast UI:** Built with Next.js App Router for optimal rendering performance.
+- **Dynamic Availability:** Set weekly working hours and specific date overrides.
+- **Conflict Prevention:** Real-time database checks prevent double-booking.
+- **Timezone Intelligence:** Seamlessly converts and formats slots based on user and invitee timezones.
+- **Automated Notifications:** Nodemailer integration for booking confirmations, cancellations, and reschedules.
+- **Premium Aesthetic:** High-fidelity UI using Tailwind CSS designed to mirror professional enterprise software.
 
 ---
 
@@ -60,20 +50,19 @@ flowchart TD
 ## Tech Stack
 
 ### Frontend
-- **Framework:** [Next.js](https://nextjs.org/) (App Router)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
+- **Framework:** Next.js 16
+- **Styling:** Tailwind CSS
 - **State/Fetching:** Custom Hooks & Native Fetch
 
 ### Backend
-- **Runtime:** [Node.js](https://nodejs.org/)
-- **Framework:** [Express.js](https://expressjs.com/)
+- **Runtime:** Node.js
+- **Framework:** Express 5.2.1
 - **Language:** TypeScript
-- **Time Logic:** `date-fns` & `date-fns-tz`
+- **Time Logic:** date-fns & date-fns-tz
 
 ### Database
-- **Engine:** [PostgreSQL](https://www.postgresql.org/)
-- **ORM:** [Prisma](https://www.prisma.io/)
+- **Engine:** PostgreSQL hosted on Neon DB
+- **ORM:** Prisma
 
 ---
 
@@ -152,8 +141,8 @@ erDiagram
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- PostgreSQL (Locally or via a service like Neon/Supabase)
+- Node.js
+- PostgreSQL database URL (e.g., from Neon DB)
 
 ### 1. Clone & Install
 Begin by installing dependencies for both the frontend and backend.
@@ -168,10 +157,10 @@ npm install
 ```
 
 ### 2. Configure Environment Variables
-Create `.env` files in both directories. Refer to the [Environment Variables](#environment-variables) section below for the required keys.
+Create `.env` files in both directories. Refer to the Environment Variables section below for the required keys.
 
 ### 3. Initialize Database
-Navigate to the backend to set up your PostgreSQL schema and seed the initial data.
+Navigate to the backend to set up your PostgreSQL schema and seed the initial data via Prisma.
 ```bash
 cd backend
 npx prisma generate
@@ -203,7 +192,7 @@ npm run dev
 ### Backend `.env`
 Located in `/backend/.env`
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/calendly_db"
+DATABASE_URL="postgresql://user:password@endpoint.neon.tech/calendly_db"
 PORT=5000
 
 # Email configurations (Optional, for notifications)
@@ -225,7 +214,7 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 
 The Express backend exposes RESTful endpoints under `/api`. Below are the core routes module boundaries:
 
-- **`/api/event-types`**: Management of meeting types (durations, limits, specifics).
-- **`/api/availability`**: Schedule generation and availability lookup (resolving base hours + overrides against existing bookings).
-- **`/api/bookings`**: Creation, rescheduling, and cancellation of meetings. Integrates heavily with `EmailService`.
+- **`/api/event-types`**: Management of meeting types.
+- **`/api/availability`**: Schedule generation and availability lookup.
+- **`/api/bookings`**: Creation, rescheduling, and cancellation of meetings.
 - **`/api/contacts`**: Auto-generated CRM records based on historical bookings. 

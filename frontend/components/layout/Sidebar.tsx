@@ -131,7 +131,7 @@ export function Sidebar() {
           </div>
           {!collapsed && (
             <span className="text-lg font-bold text-gray-900 truncate">
-              Schedulr
+              Calendly
             </span>
           )}
         </Link>

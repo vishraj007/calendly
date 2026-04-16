@@ -191,7 +191,7 @@ export default function ConfirmedPage() {
           <p className="text-xs text-gray-400">
             Powered by{" "}
             <Link href="/" className="text-[#006bff] font-semibold hover:underline">
-              Schedulr
+              Calendly
             </Link>
           </p>
         </div>

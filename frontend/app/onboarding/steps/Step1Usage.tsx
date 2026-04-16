@@ -31,10 +31,10 @@ export default function Step1Usage({ data, update, errors = {} }: Props) {
   return (
     <div className="animate-fade-in">
       <p className="text-[#006bff] font-semibold text-sm mb-2">
-        Welcome to Schedulr!
+        Welcome to Calendly!
       </p>
       <h1 className="text-3xl font-bold text-gray-900 mb-2">
-        How do you plan on using Schedulr?
+        How do you plan on using Calendly?
       </h1>
       <p className="text-gray-500 mb-8">
         Your responses will help us tailor your experience to your needs.
@@ -73,7 +73,7 @@ export default function Step1Usage({ data, update, errors = {} }: Props) {
 
       {/* Help goals */}
       <h2 className="text-xl font-bold text-gray-900 mb-1 mt-8">
-        How can Schedulr help you?
+        How can Calendly help you?
       </h2>
       <p className="text-gray-500 text-sm mb-5">Select all that apply:</p>
 

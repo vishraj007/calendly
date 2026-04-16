@@ -53,7 +53,7 @@ export default function OnboardingPage() {
   const validate = (): Record<string, string> => {
     const errs: Record<string, string> = {};
     if (step === 1) {
-      if (!data.usageType) errs.usageType = "Please select how you plan to use Schedulr.";
+      if (!data.usageType) errs.usageType = "Please select how you plan to use Calendly.";
       if (data.helpGoals.length === 0) errs.helpGoals = "Please select at least one option.";
     }
     if (step === 2) {
@@ -110,7 +110,7 @@ export default function OnboardingPage() {
           <div className="w-8 h-8 bg-[#006bff] rounded-lg flex items-center justify-center shadow-sm">
             <Calendar className="w-4 h-4 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900">Schedulr</span>
+          <span className="text-xl font-bold text-gray-900">Calendly</span>
         </div>
 
         {/* Progress */}

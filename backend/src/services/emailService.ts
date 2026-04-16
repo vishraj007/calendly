@@ -82,7 +82,7 @@ function buildEmailHtml(
     ${rows}
     ${meetingLinkBlock(meetLink)}
     <div class="footer">
-      Powered by <a href="#">Schedulr</a>
+      Powered by <a href="#">Calendly</a>
     </div>
   </div>
 </div>
@@ -125,7 +125,7 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
   );
 
   await transporter.sendMail({
-    from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+    from:    `"Calendly" <${process.env.SMTP_USER}>`,
     to:      data.inviteeEmail,
     subject: `Confirmed: ${data.eventName} with ${data.hostName}`,
     html:    inviteeHtml,
@@ -155,7 +155,7 @@ export async function sendBookingConfirmation(data: BookingEmailData): Promise<v
     );
 
     await transporter.sendMail({
-      from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+      from:    `"Calendly" <${process.env.SMTP_USER}>`,
       to:      data.hostEmail,                                              // ✅ send to HOST email
       subject: `New Booking: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
       html:    hostHtml,
@@ -195,7 +195,7 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
   );
 
   await transporter.sendMail({
-    from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+    from:    `"Calendly" <${process.env.SMTP_USER}>`,
     to:      data.inviteeEmail,
     subject: `Cancelled: ${data.eventName} with ${data.hostName}`,
     html:    inviteeHtml,
@@ -224,7 +224,7 @@ export async function sendCancellationNotice(data: BookingEmailData): Promise<vo
     );
 
     await transporter.sendMail({
-      from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+      from:    `"Calendly" <${process.env.SMTP_USER}>`,
       to:      data.hostEmail,
       subject: `Cancelled: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
       html:    hostHtml,
@@ -278,7 +278,7 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
   );
 
   await transporter.sendMail({
-    from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+    from:    `"Calendly" <${process.env.SMTP_USER}>`,
     to:      data.inviteeEmail,
     subject: `Rescheduled: ${data.eventName} with ${data.hostName}`,
     html:    inviteeHtml,
@@ -309,7 +309,7 @@ export async function sendRescheduleNotification(data: BookingEmailData): Promis
     );
 
     await transporter.sendMail({
-      from:    `"Schedulr" <${process.env.SMTP_USER}>`,
+      from:    `"Calendly" <${process.env.SMTP_USER}>`,
       to:      data.hostEmail,
       subject: `Rescheduled: ${data.eventName} with ${data.inviteeName}`,  // ✅ invitee name in subject
       html:    hostHtml,

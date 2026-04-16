@@ -1,8 +1,8 @@
-# Schedulr
+# Calendly
 
 **The Modern, Open-Source Scheduling Platform**
 
-Schedulr is a high-performance, seamless appointment scheduling tool inspired by the premium features of industry standards like Calendly. It eliminates the back-and-forth of scheduling by allowing invitees to easily pick their preferred times based on real-time availability.
+Calendly is a high-performance, seamless appointment scheduling tool inspired by the premium features of industry standards like Calendly. It eliminates the back-and-forth of scheduling by allowing invitees to easily pick their preferred times based on real-time availability.
 
 ---
 

@@ -120,7 +120,7 @@ export async function createGoogleMeetEvent(data: {
         attendees: data.attendees.map((email) => ({ email })),
         conferenceData: {
           createRequest: {
-            requestId: `schedulr-${Date.now()}`,
+            requestId: `calendly-${Date.now()}`,
             conferenceSolutionKey: { type: "hangoutsMeet" },
           },
         },

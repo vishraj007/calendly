@@ -26,7 +26,7 @@ export default function Step3Calendar({ data, update }: Props) {
         Set up how your calendar will be used
       </h1>
       <p className="text-gray-500 mb-8">
-        Let Schedulr check your calendar for conflicts to avoid double bookings.
+        Let Calendly check your calendar for conflicts to avoid double bookings.
       </p>
 
       <div className="bg-white border border-gray-200 rounded-2xl p-6">

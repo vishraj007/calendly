@@ -148,10 +148,10 @@ export default function IntegrationsPage() {
               Getting Started
             </p>
             <p className="font-bold text-gray-900 mb-1">
-              Schedulr works where you work
+              Calendly works where you work
             </p>
             <p className="text-sm text-gray-600">
-              Connect Schedulr to your favorite calendars, tools, and apps to
+              Connect Calendly to your favorite calendars, tools, and apps to
               enhance your scheduling automations.
             </p>
             {statusLoading && (

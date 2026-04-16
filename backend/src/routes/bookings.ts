@@ -101,7 +101,7 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
     // Create Google Calendar event with Meet link
     const meetResult = await createGoogleMeetEvent({
       summary: `${eventType.name} — ${inviteeName}`,
-      description: `Booked via Schedulr\nInvitee: ${inviteeName} (${inviteeEmail})`,
+      description: `Booked via Calendly\nInvitee: ${inviteeName} (${inviteeEmail})`,
       start, end, timezone, attendees,
     });
     if (meetResult) {
@@ -115,7 +115,7 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
       start,
       durationMinutes: eventType.duration,
       timezone,
-      agenda: `Booked via Schedulr by ${inviteeName}`,
+      agenda: `Booked via Calendly by ${inviteeName}`,
     });
     if (zoomResult) {
       meetingLink = zoomResult.joinUrl;
@@ -124,7 +124,7 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
     // Also create Google Calendar event for Zoom meetings
     const calResult = await createCalendarEvent({
       summary: `${eventType.name} — ${inviteeName}`,
-      description: `Zoom Meeting: ${meetingLink || "pending"}\nBooked via Schedulr`,
+      description: `Zoom Meeting: ${meetingLink || "pending"}\nBooked via Calendly`,
       start, end, timezone, attendees,
     });
     if (calResult) {
@@ -134,7 +134,7 @@ router.post("/", validate(CreateBookingSchema), asyncHandler(async (req, res) =>
     // For non-virtual locations, still create a Google Calendar event
     const calResult = await createCalendarEvent({
       summary: `${eventType.name} — ${inviteeName}`,
-      description: `Location: ${location}\nBooked via Schedulr`,
+      description: `Location: ${location}\nBooked via Calendly`,
       start, end, timezone, attendees,
     });
     if (calResult) {

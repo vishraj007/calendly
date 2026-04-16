@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Schedulr — Easy Scheduling Ahead",
+  title: "Calendly — Easy Scheduling Ahead",
   description:
-    "Schedulr is the modern scheduling platform that makes finding time a breeze. Share your availability and let people book time with you.",
+    "Calendly is the modern scheduling platform that makes finding time a breeze. Share your availability and let people book time with you.",
   keywords: ["scheduling", "booking", "calendar", "meetings", "availability"],
 };
 

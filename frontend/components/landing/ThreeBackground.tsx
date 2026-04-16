@@ -3,24 +3,11 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import {
-  Calendar,
-  Clock,
-  Video,
-  Globe,
-  Shield,
-  LinkIcon,
-  ChevronRight,
-  CalendarDays,
-  Menu,
-  X,
-  BarChart2,
-  RefreshCw,
-  Bell,
-  ArrowRight,
-  Check,
-  Star,
-  Users,
+  Calendar, Clock, Video, Globe, Shield, LinkIcon, ChevronRight,
+  CalendarDays, Menu, X, BarChart2, RefreshCw, Bell, ArrowRight,
+  Check, Star, Users,
 } from "lucide-react";
+import Image from "next/image";
 
 /* ═══════════════════════════════════════════════════════
    THREE.JS ANIMATED BACKGROUND
@@ -360,7 +347,7 @@ function Navbar() {
           >
             <Calendar size={18} color="white" />
           </div>
-          <span style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>Calendly</span>
+          <span style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>Schedulr</span>
         </Link>
 
         {/* Desktop nav */}
@@ -931,7 +918,7 @@ function ValueProps() {
             marginBottom: 16,
           }}
         >
-          Why Calendly
+          Why Schedulr
         </p>
         <h2
           style={{
@@ -954,7 +941,7 @@ function ValueProps() {
             margin: "0 auto 48px",
           }}
         >
-          Calendly&apos;s functionality goes way beyond just a scheduling link, with customizable,
+          Schedulr&apos;s functionality goes way beyond just a scheduling link, with customizable,
           automated features to help you and your team achieve goals faster.
         </p>
         <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
@@ -1164,7 +1151,7 @@ const STEP_PANELS: Record<string, React.ReactNode> = {
     <div style={{ background: "white", borderRadius: 20, boxShadow: "0 20px 60px rgba(0,0,0,0.12)", border: "1px solid #f3f4f6", padding: 28, width: "100%", maxWidth: 340 }}>
       <p style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", marginBottom: 20 }}>Share your link</p>
       <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 12, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-        <span style={{ fontSize: 12, fontFamily: "monospace", color: "#0069ff", fontWeight: 700 }}>calendly.com/yourname</span>
+        <span style={{ fontSize: 12, fontFamily: "monospace", color: "#0069ff", fontWeight: 700 }}>schedulr.com/yourname</span>
         <button style={{ fontSize: 12, fontWeight: 800, color: "white", background: "#0069ff", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}>Copy</button>
       </div>
       <p style={{ fontSize: 12, fontWeight: 700, color: "#9ca3af", marginBottom: 12 }}>Share via</p>
@@ -1197,7 +1184,7 @@ function HowItWorks() {
             Connect your calendars
           </h2>
           <p style={{ fontSize: 18, color: "#6b7280", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
-            Set up once, then let Calendly handle the rest — automatically.
+            Set up once, then let Schedulr handle the rest — automatically.
           </p>
         </div>
 
@@ -1292,7 +1279,7 @@ function Integrations() {
           <div>
             <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0069ff", marginBottom: 12 }}>Integrations</p>
             <h2 style={{ fontSize: "clamp(28px, 3vw, 48px)", fontWeight: 900, color: "#1a1a2e", margin: 0, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
-              Connect Calendly to the<br />tools you already use
+              Connect Schedulr to the<br />tools you already use
             </h2>
           </div>
           <div style={{ textAlign: "right" }}>
@@ -1319,8 +1306,8 @@ function Integrations() {
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="suite-grid">
           {[
-            { logo: <svg style={{width:42,height:42}} viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>, title: "Google suite", desc: "Connect Calendly to Google Calendar, Meet, Analytics, and more." },
-            { logo: <svg style={{width:42,height:42}} viewBox="0 0 23 23"><path fill="#f25022" d="M0 0h11v11H0z"/><path fill="#7fba00" d="M12 0h11v11H12z"/><path fill="#00a4ef" d="M0 12h11v11H0z"/><path fill="#ffb900" d="M12 12h11v11H12z"/></svg>, title: "Microsoft suite", desc: "Connect Calendly to Microsoft Teams, Outlook, Azure SSO, and more." },
+            { logo: <svg style={{width:42,height:42}} viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>, title: "Google suite", desc: "Connect Schedulr to Google Calendar, Meet, Analytics, and more." },
+            { logo: <svg style={{width:42,height:42}} viewBox="0 0 23 23"><path fill="#f25022" d="M0 0h11v11H0z"/><path fill="#7fba00" d="M12 0h11v11H12z"/><path fill="#00a4ef" d="M0 12h11v11H0z"/><path fill="#ffb900" d="M12 12h11v11H12z"/></svg>, title: "Microsoft suite", desc: "Connect Schedulr to Microsoft Teams, Outlook, Azure SSO, and more." },
           ].map((s) => (
             <div
               key={s.title}
@@ -1363,7 +1350,7 @@ function CustomerResults() {
           <div>
             <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0069ff", marginBottom: 12 }}>Results</p>
             <h2 style={{ fontSize: "clamp(28px, 3vw, 48px)", fontWeight: 900, color: "#1a1a2e", margin: 0, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
-              Discover how businesses<br />grow with Calendly
+              Discover how businesses<br />grow with Schedulr
             </h2>
           </div>
           <Link href="/onboarding" style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
@@ -1637,7 +1624,7 @@ function CTA() {
           Get started in seconds<br />— for free.
         </h2>
         <p style={{ fontSize: "clamp(17px, 1.5vw, 21px)", color: "rgba(147,197,253,1)", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 48px" }}>
-          Join millions of professionals who use Calendly to simplify their scheduling. No credit card required.
+          Join millions of professionals who use Schedulr to simplify their scheduling. No credit card required.
         </p>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           <Link href="/onboarding" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#0069ff", color: "white", fontSize: 17, fontWeight: 800, padding: "16px 40px", borderRadius: 999, textDecoration: "none", boxShadow: "0 8px 28px rgba(0,105,255,0.5)", transition: "all 0.2s" }}>
@@ -1671,7 +1658,7 @@ function Footer() {
               <div style={{ width: 38, height: 38, background: "#0069ff", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(0,105,255,0.3)" }}>
                 <Calendar size={20} color="white" />
               </div>
-              <span style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>Calendly</span>
+              <span style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>Schedulr</span>
             </Link>
             <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.7, maxWidth: 280, marginBottom: 28 }}>
               The modern scheduling platform that makes finding time a breeze for teams of all sizes.
@@ -1706,7 +1693,7 @@ function Footer() {
         </div>
 
         <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: 32, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-          <p style={{ fontSize: 14, color: "#9ca3af" }}>© {new Date().getFullYear()} Calendly, Inc. All rights reserved.</p>
+          <p style={{ fontSize: 14, color: "#9ca3af" }}>© {new Date().getFullYear()} Schedulr, Inc. All rights reserved.</p>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 8, height: 8, background: "#4ade80", borderRadius: "50%", display: "inline-block", animation: "pulse 2s infinite" }} />
             <span style={{ fontSize: 14, color: "#9ca3af", fontWeight: 500 }}>All systems operational</span>

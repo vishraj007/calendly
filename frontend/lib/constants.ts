@@ -44,7 +44,7 @@ export const DEFAULT_INTEGRATIONS: IntegrationConfig[] = [
     id: INTEGRATION_IDS.ZOOM,
     name: "Zoom",
     description:
-      "Include Zoom details in your Schedulr events. Automatically create unique Zoom meetings for each booking.",
+      "Include Zoom details in your Calendly events. Automatically create unique Zoom meetings for each booking.",
     category: "Video Conferencing",
     connected: false,
   },
@@ -52,7 +52,7 @@ export const DEFAULT_INTEGRATIONS: IntegrationConfig[] = [
     id: INTEGRATION_IDS.GOOGLE_MEET,
     name: "Google Meet",
     description:
-      "Include Google Meet details in your Schedulr events. Participants receive a unique meeting link.",
+      "Include Google Meet details in your Calendly events. Participants receive a unique meeting link.",
     category: "Video Conferencing",
     connected: false,
   },
@@ -117,7 +117,7 @@ export const DEFAULT_INTEGRATIONS: IntegrationConfig[] = [
     id: INTEGRATION_IDS.ZAPIER,
     name: "Zapier",
     description:
-      "Connect Schedulr to 5,000+ apps. Automate workflows without code.",
+      "Connect Calendly to 5,000+ apps. Automate workflows without code.",
     category: "Automation",
     connected: false,
   },

@@ -358,7 +358,7 @@ export default function BookingPage() {
         <span className="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-1.5 text-xs text-gray-500 shadow-sm">
           powered by{" "}
           <Link href="/" className="font-bold text-[#006bff] hover:underline">
-            Schedulr
+            Calendly
           </Link>
         </span>
       </div>

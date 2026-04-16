@@ -38,7 +38,7 @@ export default function Step3Calendar({ data, update }: Props) {
             </div>
             <div>
               <p className="font-semibold text-gray-900">Google Calendar</p>
-              <p className="text-sm text-gray-500">alex@schedulr.dev</p>
+              <p className="text-sm text-gray-500">vishalrawat2612@gmail.com</p>
             </div>
           </div>
 

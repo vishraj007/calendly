@@ -16,8 +16,8 @@ async function main() {
   const user = await prisma.user.create({
     data: {
       id: DEFAULT_USER_ID,
-      name: "Alex Johnson",
-      email: "alex@schedulr.dev",
+      name: "Vishal Rawat",
+      email: "vishalrawat2612@gmail.com",
       timezone: "Asia/Kolkata",
     },
   });

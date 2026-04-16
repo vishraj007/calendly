@@ -14,8 +14,8 @@ const TIMEZONES = [
 
 export default function AdminPage() {
   const [profile, setProfile] = useState({
-    name: "Alex Johnson",
-    email: "alex@schedulr.dev",
+    name: "Vishal Rawat",
+    email: "vishalrawat2612@gmail.com",
     timezone: "Asia/Kolkata",
   });
   const [saving, setSaving] = useState(false);

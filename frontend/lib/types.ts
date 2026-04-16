@@ -44,6 +44,7 @@ export interface TimeSlot {
   endTime: string;
   startTimeUTC: string;
   endTimeUTC: string;
+  available: boolean;
 }
 
 export interface Booking {

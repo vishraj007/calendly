@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Calendar,
   Clock,
@@ -18,6 +18,9 @@ import {
   CalendarDays,
   Menu,
   X,
+  BarChart2,
+  RefreshCw,
+  Bell,
 } from "lucide-react";
 
 /* ─────────────── Navbar ─────────────── */
@@ -35,43 +38,34 @@ function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100"
-          : "bg-transparent"
+          ? "bg-white shadow-sm border-b border-gray-100"
+          : "bg-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-[#006bff] rounded-lg flex items-center justify-center shadow-md shadow-blue-200">
-            <Calendar className="w-5 h-5 text-white" />
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-[#0069ff] rounded-lg flex items-center justify-center">
+            <Calendar className="w-4 h-4 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900">Schedulr</span>
+          <span className="text-xl font-bold text-[#1a1a2e]">Schedulr</span>
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-            Features
-          </a>
-          <a href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-            How It Works
-          </a>
-          <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-            Pricing
-          </a>
+          <a href="#features" className="text-sm font-medium text-gray-600 hover:text-[#0069ff] transition-colors">Features</a>
+          <a href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-[#0069ff] transition-colors">How It Works</a>
+          <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-[#0069ff] transition-colors">Pricing</a>
+          <a href="#integrations" className="text-sm font-medium text-gray-600 hover:text-[#0069ff] transition-colors">Integrations</a>
         </nav>
 
-        {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/onboarding"
-            className="text-sm font-semibold text-white bg-[#006bff] hover:bg-[#0052cc] px-5 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all"
+            className="text-sm font-semibold text-white bg-[#0069ff] hover:bg-[#0052cc] px-5 py-2.5 rounded-md transition-all"
           >
-            Get Started Free
+            Get started free
           </Link>
         </div>
 
-        {/* Mobile menu toggle */}
         <button
           className="md:hidden p-2 rounded-lg hover:bg-gray-100"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -80,14 +74,13 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3 animate-fade-in">
+        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3">
           <a href="#features" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMobileOpen(false)}>Features</a>
           <a href="#how-it-works" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMobileOpen(false)}>How It Works</a>
           <a href="#pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setMobileOpen(false)}>Pricing</a>
           <div className="pt-3 border-t border-gray-100 space-y-2">
-            <Link href="/onboarding" className="block text-center text-sm font-semibold text-white bg-[#006bff] py-2.5 rounded-full">Get Started Free</Link>
+            <Link href="/onboarding" className="block text-center text-sm font-semibold text-white bg-[#0069ff] py-2.5 rounded-md">Get started free</Link>
           </div>
         </div>
       )}
@@ -98,186 +91,248 @@ function Navbar() {
 /* ─────────────── Hero ─────────────── */
 function Hero() {
   return (
-    <section className="hero-gradient pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
-      {/* Decorative shapes */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100 rounded-full opacity-40 blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-purple-100 rounded-full opacity-40 blur-3xl" />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left — Copy */}
-          <div className="animate-slide-up">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#006bff] text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-blue-100">
-              <Zap className="w-3.5 h-3.5" />
-              FREE SCHEDULING FOR EVERYONE
-            </div>
-            <h1 className="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] mb-6 tracking-tight">
-              Easy scheduling{" "}
-              <span className="text-[#006bff] relative">
-                ahead
-                <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
-                  <path d="M2 8c40-6 80-6 120-2s60 4 76-2" stroke="#006bff" strokeWidth="3" strokeLinecap="round" opacity="0.3"/>
-                </svg>
-              </span>
-            </h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-              Schedulr is the modern scheduling platform that makes
-              &quot;finding time&quot; a breeze. When connecting is easy, your
-              teams can get more done.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/onboarding"
-                className="inline-flex items-center justify-center gap-2 bg-[#006bff] text-white text-base font-semibold px-8 py-3.5 rounded-full hover:bg-[#0052cc] shadow-lg shadow-blue-200 hover:shadow-xl hover:shadow-blue-200 transition-all"
-              >
-                Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="flex items-center gap-6 mt-8 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" /> No credit card</span>
-              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" /> Free forever</span>
-              <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" /> Setup in 2 min</span>
-            </div>
+    <section className="pt-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h1 className="text-5xl lg:text-6xl font-extrabold text-[#1a1a2e] leading-[1.1] mb-6 tracking-tight">
+            Easy scheduling<br />ahead
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
+            Join 20 million professionals who easily book meetings with Schedulr — the modern scheduling tool that eliminates back-and-forth.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <Link
+              href="/onboarding"
+              className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-[#0052cc] transition-all shadow-md"
+            >
+              Get started free
+            </Link>
           </div>
+          <p className="text-sm text-gray-500">No credit card required</p>
+        </div>
 
-          {/* Right — Preview Card */}
-          <div className="hidden lg:flex justify-center animate-slide-up delay-200">
-            <HeroPreviewCard />
-          </div>
+        <div className="flex justify-center lg:justify-end">
+          <BookingPreview />
         </div>
       </div>
+
+      {/* ── MARQUEE LOGO STRIP ── */}
+      <TrustedByMarquee />
     </section>
   );
 }
 
-/* Live-looking preview card in hero */
-function HeroPreviewCard() {
-  return (
-    <div className="relative">
-      {/* Glow behind */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-400 rounded-3xl blur-2xl opacity-20 scale-105" />
+/* ─────────────── Marquee (Screenshot 1) ─────────────── */
+const LOGOS = [
+  { name: "Dropbox",           emoji: "📦" },
+  { name: "Gong",              emoji: "🔔" },
+  { name: "Carnival",          emoji: "🚢" },
+  { name: "Indiana University",emoji: "🎓" },
+  { name: "DoorDash",          emoji: "🚗" },
+  { name: "Lyft",              emoji: "🚕" },
+  { name: "Compass",           emoji: "🧭" },
+  { name: "Zendesk",           emoji: "💬" },
+  { name: "Notion",            emoji: "📝" },
+  { name: "Figma",             emoji: "🎨" },
+];
 
-      <div className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden w-[400px] animate-float">
-        {/* Top bar */}
-        <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#006bff] rounded-lg flex items-center justify-center">
+function TrustedByMarquee() {
+  // duplicate for seamless loop
+  const items = [...LOGOS, ...LOGOS];
+
+  return (
+    <div className="border-t border-b border-gray-100 bg-gray-50 py-8 overflow-hidden">
+      <p className="text-center text-sm font-semibold text-gray-500 mb-6">
+        Trusted by more than <strong>100,000</strong> of the world's leading organizations
+      </p>
+
+      {/* Outer mask: fade edges */}
+      <div
+        className="relative"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+        }}
+      >
+        <div className="flex gap-14 animate-marquee w-max">
+          {items.map((logo, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 shrink-0 opacity-60 hover:opacity-100 transition-opacity"
+            >
+              <span className="text-xl">{logo.emoji}</span>
+              <span className="text-gray-700 font-bold text-sm tracking-wide uppercase whitespace-nowrap">
+                {logo.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 28s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function BookingPreview() {
+  const [selectedDay, setSelectedDay] = useState(22);
+  const [selectedTime, setSelectedTime] = useState("11:00am");
+
+  const times = ["10:00am", "11:00am", "1:00pm", "2:30pm", "4:00pm"];
+
+  return (
+    <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+      <div className="bg-[#0069ff] px-6 py-3 text-center">
+        <p className="text-white text-xs font-semibold tracking-wide">Share your booking page</p>
+      </div>
+
+      <div className="flex divide-x divide-gray-100">
+        <div className="w-44 shrink-0 p-5 bg-gray-50">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-7 h-7 bg-[#0069ff] rounded-lg flex items-center justify-center">
               <Calendar className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-bold text-gray-800">Schedulr</span>
+            <span className="text-xs font-bold text-gray-800">Schedulr</span>
           </div>
-          <span className="text-xs text-gray-400">Select a Date & Time</span>
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 mb-3 flex items-center justify-center text-white text-sm font-bold">F</div>
+          <p className="text-xs text-gray-500 mb-1">Fatima Sy</p>
+          <p className="text-sm font-bold text-gray-900 mb-4">Client Check-in</p>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Clock className="w-3.5 h-3.5 text-gray-400" />
+            <span className="text-xs text-gray-600">30 min</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Video className="w-3.5 h-3.5 text-gray-400" />
+            <span className="text-xs text-gray-600">Zoom</span>
+          </div>
         </div>
 
-        {/* Calendar grid */}
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="flex-1 p-5">
+          <p className="text-xs font-bold text-gray-700 mb-3">Select a Date & Time</p>
+          <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-bold text-gray-800">April 2026</span>
             <div className="flex gap-1">
-              <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs">‹</div>
-              <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs">›</div>
+              <button className="w-5 h-5 bg-gray-100 rounded text-gray-400 text-xs flex items-center justify-center">‹</button>
+              <button className="w-5 h-5 bg-gray-100 rounded text-gray-400 text-xs flex items-center justify-center">›</button>
             </div>
           </div>
-          <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-400 mb-2 font-semibold">
-            {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
-              <div key={i}>{d}</div>
-            ))}
+
+          <div className="grid grid-cols-7 gap-0.5 text-center text-xs text-gray-400 mb-2 font-semibold">
+            {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => <div key={i}>{d}</div>)}
           </div>
-          <div className="grid grid-cols-7 gap-1 text-center text-xs">
-            {Array.from({ length: 35 }, (_, i) => {
-              const day = i - 2;
-              if (day <= 0 || day > 30) return <div key={i} />;
-              const isSelected = day === 15;
-              const isToday = day === 14;
-              const isAvailable = [1,2,3,4,5].includes((i) % 7);
+
+          <div className="grid grid-cols-7 gap-0.5 text-center text-xs mb-4">
+            {[...Array(3)].map((_, i) => <div key={`e${i}`} />)}
+            {Array.from({ length: 30 }, (_, i) => {
+              const day = i + 1;
+              const isAvail = [14,15,16,17,18,21,22,23,24,25,28,29,30].includes(day);
+              const isSelected = day === selectedDay;
               return (
-                <div
-                  key={i}
-                  className={`w-8 h-8 flex items-center justify-center rounded-full mx-auto text-xs transition-all
-                    ${isSelected ? "bg-[#006bff] text-white font-bold shadow-md shadow-blue-200" : ""}
-                    ${isToday && !isSelected ? "border-2 border-[#006bff] text-[#006bff] font-bold" : ""}
-                    ${!isSelected && !isToday && isAvailable ? "text-gray-800 hover:bg-blue-50 cursor-pointer" : ""}
-                    ${!isSelected && !isToday && !isAvailable ? "text-gray-300" : ""}
+                <button
+                  key={day}
+                  onClick={() => isAvail && setSelectedDay(day)}
+                  className={`w-7 h-7 flex items-center justify-center rounded-full mx-auto transition-all text-xs
+                    ${isSelected ? "bg-[#0069ff] text-white font-bold" : ""}
+                    ${!isSelected && isAvail ? "text-gray-800 font-semibold hover:bg-blue-50 cursor-pointer border border-[#0069ff]" : ""}
+                    ${!isSelected && !isAvail ? "text-gray-300" : ""}
                   `}
                 >
                   {day}
-                </div>
+                </button>
               );
             })}
           </div>
 
-          {/* Time slots preview */}
-          <div className="mt-5 pt-4 border-t border-gray-100">
-            <p className="text-xs font-bold text-gray-700 mb-3">Available Times — Tue, Apr 15</p>
-            <div className="grid grid-cols-3 gap-2">
-              {["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM"].map((t, i) => (
-                <button
-                  key={t}
-                  className={`text-xs font-semibold py-2 rounded-lg border transition-all ${
-                    i === 2
-                      ? "bg-[#006bff] text-white border-[#006bff] shadow-sm"
-                      : "border-[#006bff] text-[#006bff] hover:bg-blue-50"
-                  }`}
-                >
-                  {t}
-                </button>
+          <div className="border-t border-gray-100 pt-3">
+            <p className="text-xs font-bold text-gray-700 mb-2">
+              {selectedDay ? `Tue, Apr ${selectedDay}` : "Select a date"}
+            </p>
+            <div className="flex flex-col gap-1.5">
+              {times.map((t) => (
+                <div key={t} className="flex gap-1.5 items-center">
+                  <button
+                    onClick={() => setSelectedTime(t)}
+                    className={`flex-1 text-xs font-semibold py-1.5 rounded border transition-all ${
+                      selectedTime === t
+                        ? "bg-[#1a1a2e] text-white border-[#1a1a2e]"
+                        : "border-[#0069ff] text-[#0069ff] hover:bg-blue-50"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                  {selectedTime === t && (
+                    <Link
+                      href="/onboarding"
+                      className="bg-[#0069ff] text-white text-xs font-bold px-3 py-1.5 rounded border border-[#0069ff] hover:bg-[#0052cc] transition-all"
+                    >
+                      Confirm
+                    </Link>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <div className="bg-gray-50 border-t border-gray-100 px-5 py-2.5 flex items-center gap-1.5">
+        <Globe className="w-3.5 h-3.5 text-gray-400" />
+        <span className="text-xs text-gray-500">Eastern time – US & Canada</span>
+      </div>
     </div>
+  );
+}
+
+/* ─────────────── Value Props ─────────────── */
+function ValueProps() {
+  return (
+    <section className="py-20 lg:py-28 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-[#1a1a2e] mb-6 leading-tight">
+          Schedulr makes<br />scheduling simple
+        </h2>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+          Simple enough for individual users, powerful enough to meet the needs of growing teams.
+        </p>
+        <Link href="/onboarding" className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-[#0052cc] transition-all">
+          Get started free
+        </Link>
+      </div>
+    </section>
   );
 }
 
 /* ─────────────── Features ─────────────── */
 const FEATURES = [
-  {
-    icon: CalendarDays,
-    title: "Event Types",
-    description: "Create custom event types with different durations, locations, and custom questions for every need.",
-    color: "bg-blue-50 text-[#006bff]",
-  },
-  {
-    icon: Clock,
-    title: "Smart Availability",
-    description: "Set weekly hours, date-specific overrides, and buffer times. Only get booked when you're actually free.",
-    color: "bg-purple-50 text-purple-600",
-  },
-  {
-    icon: LinkIcon,
-    title: "Shareable Links",
-    description: "Each event type gets a unique booking link. Share it via email, embed on your site, or send directly.",
-    color: "bg-green-50 text-green-600",
-  },
-  {
-    icon: Shield,
-    title: "No Double Bookings",
-    description: "Real-time conflict detection ensures no two meetings ever overlap. Your calendar stays clean.",
-    color: "bg-orange-50 text-orange-600",
-  },
-  {
-    icon: Video,
-    title: "Meeting Locations",
-    description: "Google Meet, Zoom, Microsoft Teams, phone calls, or in-person — meet your way.",
-    color: "bg-rose-50 text-rose-600",
-  },
-  {
-    icon: Globe,
-    title: "Timezone Smart",
-    description: "Automatically detect and convert timezones so everyone sees the right time, everywhere.",
-    color: "bg-teal-50 text-teal-600",
-  },
+  { icon: CalendarDays, title: "Event Types", description: "Create custom event types with different durations, locations, and custom questions for every need.", color: "text-[#0069ff] bg-blue-50" },
+  { icon: Clock, title: "Smart Availability", description: "Set weekly hours, date-specific overrides, and buffer times. Only get booked when you're actually free.", color: "text-purple-600 bg-purple-50" },
+  { icon: LinkIcon, title: "Shareable Links", description: "Each event type gets a unique booking link. Share it via email, embed on your site, or send directly.", color: "text-green-600 bg-green-50" },
+  { icon: Shield, title: "No Double Bookings", description: "Real-time conflict detection ensures no two meetings ever overlap. Your calendar stays clean.", color: "text-orange-600 bg-orange-50" },
+  { icon: Video, title: "Meeting Locations", description: "Google Meet, Zoom, Microsoft Teams, phone calls, or in-person — meet your way.", color: "text-rose-600 bg-rose-50" },
+  { icon: Globe, title: "Timezone Smart", description: "Automatically detect and convert timezones so everyone sees the right time, everywhere.", color: "text-teal-600 bg-teal-50" },
+  { icon: Bell, title: "Reminders & Follow-ups", description: "Automatic email reminders and follow-ups reduce no-shows and keep everyone on track.", color: "text-amber-600 bg-amber-50" },
+  { icon: BarChart2, title: "Analytics", description: "Track booking trends, peak availability, and meeting patterns with built-in reporting.", color: "text-indigo-600 bg-indigo-50" },
+  { icon: RefreshCw, title: "Reschedule & Cancel", description: "Allow invitees to reschedule or cancel at their convenience with automatic calendar updates.", color: "text-cyan-600 bg-cyan-50" },
 ];
 
 function Features() {
   return (
-    <section id="features" className="py-20 lg:py-28 bg-white">
+    <section id="features" className="py-20 lg:py-28 bg-[#f8f9ff]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-[#006bff] text-sm font-semibold tracking-wide uppercase">Features</span>
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mt-3 mb-4">
+          <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">Features</p>
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4">
             Everything you need to schedule smarter
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
@@ -285,16 +340,13 @@ function Features() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {FEATURES.map((f) => (
-            <div
-              key={f.title}
-              className="feature-card-gradient border border-gray-200 rounded-2xl p-7 hover:shadow-lg hover:border-gray-300 transition-all duration-300 group"
-            >
-              <div className={`w-12 h-12 rounded-xl ${f.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                <f.icon className="w-6 h-6" />
+            <div key={f.title} className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-gray-200 transition-all duration-200 group">
+              <div className={`w-11 h-11 rounded-xl ${f.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <f.icon className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{f.title}</h3>
+              <h3 className="text-base font-bold text-[#1a1a2e] mb-2">{f.title}</h3>
               <p className="text-sm text-gray-600 leading-relaxed">{f.description}</p>
             </div>
           ))}
@@ -306,43 +358,19 @@ function Features() {
 
 /* ─────────────── How It Works ─────────────── */
 const STEPS = [
-  {
-    step: "01",
-    title: "Create your event types",
-    description: "Set up different meeting types with custom durations — from 15-minute quick chats to hour-long deep dives.",
-    icon: CalendarDays,
-    color: "#006bff",
-  },
-  {
-    step: "02",
-    title: "Set your availability",
-    description: "Define your weekly hours, add buffer times, and override specific dates. You stay in control.",
-    icon: Clock,
-    color: "#7b2ff7",
-  },
-  {
-    step: "03",
-    title: "Share your link",
-    description: "Send your unique booking link to anyone. They pick a time that works, you get notified instantly.",
-    icon: LinkIcon,
-    color: "#00a854",
-  },
-  {
-    step: "04",
-    title: "Meet & grow",
-    description: "View upcoming meetings, reschedule when needed, and never miss a beat. It's that simple.",
-    icon: Users,
-    color: "#ff4f00",
-  },
+  { step: "01", title: "Create your event types", description: "Set up different meeting types with custom durations — from 15-minute quick chats to hour-long deep dives.", icon: CalendarDays },
+  { step: "02", title: "Set your availability", description: "Define your weekly hours, add buffer times, and override specific dates. You stay in control.", icon: Clock },
+  { step: "03", title: "Share your link", description: "Send your unique booking link to anyone. They pick a time that works, you get notified instantly.", icon: LinkIcon },
+  { step: "04", title: "Meet & grow", description: "View upcoming meetings, reschedule when needed, and never miss a beat. It's that simple.", icon: Users },
 ];
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 lg:py-28 bg-gray-50">
+    <section id="how-it-works" className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-[#006bff] text-sm font-semibold tracking-wide uppercase">How It Works</span>
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mt-3 mb-4">
+          <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">How It Works</p>
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4">
             Get started in minutes
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
@@ -351,24 +379,23 @@ function HowItWorks() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {STEPS.map((s) => (
-            <div key={s.step} className="text-center group">
-              <div className="relative mx-auto w-16 h-16 mb-6">
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform"
-                  style={{ backgroundColor: `${s.color}12`, color: s.color }}
-                >
-                  <s.icon className="w-7 h-7" />
+          {STEPS.map((s, idx) => (
+            <div key={s.step} className="relative">
+              {idx < STEPS.length - 1 && (
+                <div className="hidden lg:block absolute top-8 left-[calc(50%+2.5rem)] right-0 h-0.5 bg-gray-200" />
+              )}
+              <div className="text-center group">
+                <div className="relative mx-auto w-16 h-16 mb-5">
+                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-[#0069ff] transition-colors">
+                    <s.icon className="w-7 h-7 text-[#0069ff] group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#0069ff] rounded-full text-white text-xs font-bold flex items-center justify-center shadow">
+                    {parseInt(s.step)}
+                  </span>
                 </div>
-                <span
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center shadow-md"
-                  style={{ backgroundColor: s.color }}
-                >
-                  {s.step.replace("0", "")}
-                </span>
+                <h3 className="text-base font-bold text-[#1a1a2e] mb-2">{s.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{s.description}</p>
               </div>
-              <h3 className="text-base font-bold text-gray-900 mb-2">{s.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{s.description}</p>
             </div>
           ))}
         </div>
@@ -379,59 +406,66 @@ function HowItWorks() {
 
 /* ─────────────── Integrations ─────────────── */
 const INTEGRATIONS = [
-  { name: "Google Calendar", emoji: "📅" },
-  { name: "Zoom", emoji: "📹" },
-  { name: "Google Meet", emoji: "🎥" },
-  { name: "Microsoft Teams", emoji: "💼" },
-  { name: "Outlook", emoji: "📧" },
-  { name: "Slack", emoji: "💬" },
+  { name: "Google Calendar", emoji: "📅", desc: "Sync your availability" },
+  { name: "Google Meet", emoji: "🎥", desc: "Auto-generate links" },
+  { name: "Zoom", emoji: "📹", desc: "Auto-generate links" },
+  { name: "Microsoft Teams", emoji: "💼", desc: "Virtual meetings" },
+  { name: "Outlook", emoji: "📧", desc: "Calendar sync" },
+  { name: "Slack", emoji: "💬", desc: "Meeting notifications" },
 ];
 
 function Integrations() {
   return (
-    <section className="py-20 lg:py-24 bg-white">
+    <section id="integrations" className="py-20 lg:py-28 bg-[#f8f9ff]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <span className="text-[#006bff] text-sm font-semibold tracking-wide uppercase">Integrations</span>
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mt-3 mb-4">
-            Connect tools you already use
-          </h2>
-          <p className="text-gray-600 max-w-xl mx-auto text-lg">
-            Boost productivity with seamless integrations.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-4xl mx-auto">
-          {INTEGRATIONS.map((i) => (
-            <div
-              key={i.name}
-              className="bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col items-center gap-3 hover:shadow-md hover:border-gray-300 transition-all group"
-            >
-              <span className="text-3xl group-hover:scale-110 transition-transform">{i.emoji}</span>
-              <span className="text-xs font-semibold text-gray-700 text-center">{i.name}</span>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">Integrations</p>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-4">
+              Connect Schedulr to the tools you already use
+            </h2>
+            <p className="text-gray-600 text-lg mb-6">Boost productivity with seamless integrations.</p>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {["Google Calendar", "Google Meet", "Zoom"].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1.5 bg-blue-50 text-[#0069ff] text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-100">
+                  <Check className="w-3 h-3" /> {t}
+                </span>
+              ))}
             </div>
-          ))}
+            <Link href="/onboarding" className="inline-flex items-center gap-2 text-[#0069ff] font-semibold text-sm hover:underline">
+              View all integrations <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {INTEGRATIONS.map((i) => (
+              <div key={i.name} className="bg-white border border-gray-200 rounded-2xl p-4 flex flex-col items-center gap-2 hover:shadow-md hover:border-blue-200 transition-all group cursor-pointer">
+                <span className="text-3xl group-hover:scale-110 transition-transform">{i.emoji}</span>
+                <span className="text-xs font-bold text-gray-800 text-center">{i.name}</span>
+                <span className="text-xs text-gray-400 text-center">{i.desc}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ─────────────── Social Proof ─────────────── */
+/* ─────────────── Social Proof / Stats ─────────────── */
 function SocialProof() {
   return (
-    <section className="py-16 bg-[#006bff]">
+    <section className="py-16 bg-[#0069ff]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8 text-center text-white">
           {[
-            { value: "10K+", label: "Active Users" },
-            { value: "250K+", label: "Meetings Booked" },
-            { value: "99.9%", label: "Uptime" },
+            { value: "20M+", label: "Active Users" },
+            { value: "100K+", label: "Organizations" },
+            { value: "500M+", label: "Meetings Booked" },
             { value: "4.9/5", label: "User Rating", icon: <Star className="w-4 h-4 inline text-yellow-300" /> },
           ].map(({ value, label, icon }) => (
             <div key={label}>
-              <p className="text-3xl lg:text-4xl font-extrabold mb-1">
-                {value} {icon}
-              </p>
+              <p className="text-3xl lg:text-4xl font-extrabold mb-1">{value} {icon}</p>
               <p className="text-sm text-blue-200 font-medium">{label}</p>
             </div>
           ))}
@@ -441,120 +475,271 @@ function SocialProof() {
   );
 }
 
-/* ─────────────── Pricing ─────────────── */
-function Pricing() {
+/* ─────────────── Customer Results (Screenshot 2 style) ─────────────── */
+type ResultCard = {
+  company: string;
+  stat: string;
+  label: string;
+  /** Tailwind bg class for the blob fill */
+  blobBg: string;
+  /** Tailwind text class for the stat number */
+  statColor: string;
+  /** When card is "active" (clicked/selected), the blob covers the card */
+  activeBg: string;
+  activeText: string;
+};
+
+const RESULTS: ResultCard[] = [
+  {
+    company: "HackerOne",
+    stat: "169%",
+    label: "return on investment",
+    blobBg: "bg-[#1a1a2e]",
+    statColor: "text-[#1a1a2e]",
+    activeBg: "bg-[#1a1a2e]",
+    activeText: "text-white",
+  },
+  {
+    company: "Vonage",
+    stat: "160%",
+    label: "increase in customers reached",
+    blobBg: "bg-[#0069ff]",
+    statColor: "text-[#0069ff]",
+    activeBg: "bg-[#0069ff]",
+    activeText: "text-white",
+  },
+  {
+    company: "University of Texas",
+    stat: "20%",
+    label: "decrease in scheduling errors",
+    blobBg: "bg-amber-500",
+    statColor: "text-amber-500",
+    activeBg: "bg-amber-500",
+    activeText: "text-white",
+  },
+  {
+    company: "MuckRack",
+    stat: "8x",
+    label: "faster meeting scheduling",
+    blobBg: "bg-purple-600",
+    statColor: "text-purple-600",
+    activeBg: "bg-purple-600",
+    activeText: "text-white",
+  },
+];
+
+function CustomerResults() {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+
   return (
-    <section id="pricing" className="py-20 lg:py-28 bg-gray-50">
+    <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span className="text-[#006bff] text-sm font-semibold tracking-wide uppercase">Pricing</span>
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mt-3 mb-4">
-            Pick the perfect plan
-          </h2>
-          <p className="text-gray-600 max-w-xl mx-auto text-lg">
-            Start for free. Upgrade when you need more.
-          </p>
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">Results</p>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e]">
+              Discover how businesses<br />grow with Schedulr
+            </h2>
+          </div>
+          <Link href="/onboarding" className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-[#0069ff] transition-colors">
+            View all stories <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {/* Free */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg transition-all">
-            <p className="text-sm font-semibold text-gray-500 mb-1">Free</p>
-            <p className="text-4xl font-extrabold text-gray-900 mb-1">$0</p>
-            <p className="text-sm text-gray-500 mb-6">forever</p>
-            <ul className="space-y-3 mb-8 text-sm text-gray-700">
-              {["1 event type", "Unlimited bookings", "Calendar integrations", "Customizable booking page", "Email notifications"].map(
-                (f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500 shrink-0" /> {f}
-                  </li>
-                )
-              )}
-            </ul>
-            <Link
-              href="/onboarding"
-              className="block text-center text-sm font-semibold text-[#006bff] border-2 border-[#006bff] px-6 py-3 rounded-full hover:bg-blue-50 transition-all"
-            >
-              Get Started
-            </Link>
-          </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {RESULTS.map((r, idx) => {
+            const isActive = activeCard === idx;
+            return (
+              <div
+                key={r.company}
+                onClick={() => setActiveCard(isActive ? null : idx)}
+                className={`relative border rounded-2xl p-6 overflow-hidden cursor-pointer transition-all duration-300 select-none
+                  ${isActive
+                    ? `${r.activeBg} border-transparent shadow-xl scale-[1.02]`
+                    : "bg-white border-gray-200 hover:shadow-lg hover:scale-[1.01]"
+                  }`}
+              >
+                {/* Company name */}
+                <p className={`text-sm font-bold mb-4 transition-colors duration-300 ${isActive ? "text-white/80" : "text-gray-800"}`}>
+                  {r.company}
+                </p>
 
-          {/* Standard — highlighted */}
-          <div className="bg-white border-2 border-[#006bff] rounded-2xl p-8 shadow-lg shadow-blue-100 relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#006bff] text-white text-xs font-bold px-4 py-1 rounded-full">
-              MOST POPULAR
-            </div>
-            <p className="text-sm font-semibold text-[#006bff] mb-1">Standard</p>
-            <p className="text-4xl font-extrabold text-gray-900 mb-1">$10</p>
-            <p className="text-sm text-gray-500 mb-6">/month</p>
-            <ul className="space-y-3 mb-8 text-sm text-gray-700">
-              {["Unlimited event types", "Everything in Free", "Custom questions", "Buffer time between meetings", "Multiple schedules", "Priority support"].map(
-                (f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#006bff] shrink-0" /> {f}
-                  </li>
-                )
-              )}
-            </ul>
-            <Link
-              href="/onboarding"
-              className="block text-center text-sm font-semibold text-white bg-[#006bff] px-6 py-3 rounded-full hover:bg-[#0052cc] shadow-md transition-all"
-            >
-              Start Free Trial
-            </Link>
-          </div>
+                {/* Big stat */}
+                <p className={`text-5xl font-extrabold mb-2 transition-colors duration-300 ${isActive ? "text-white" : r.statColor}`}>
+                  {r.stat}
+                </p>
 
-          {/* Teams */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg transition-all">
-            <p className="text-sm font-semibold text-gray-500 mb-1">Teams</p>
-            <p className="text-4xl font-extrabold text-gray-900 mb-1">$16</p>
-            <p className="text-sm text-gray-500 mb-6">/user/month</p>
-            <ul className="space-y-3 mb-8 text-sm text-gray-700">
-              {["Everything in Standard", "Team scheduling", "Round-robin meetings", "Admin management", "Analytics & reporting", "SSO integration"].map(
-                (f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500 shrink-0" /> {f}
-                  </li>
-                )
-              )}
-            </ul>
-            <Link
-              href="/onboarding"
-              className="block text-center text-sm font-semibold text-[#006bff] border-2 border-[#006bff] px-6 py-3 rounded-full hover:bg-blue-50 transition-all"
-            >
-              Try for Free
-            </Link>
-          </div>
+                {/* Label */}
+                <p className={`text-sm mb-5 transition-colors duration-300 ${isActive ? "text-white/80" : "text-gray-600"}`}>
+                  {r.label}
+                </p>
+
+                {/* Read now link */}
+                <Link
+                  href="/onboarding"
+                  onClick={(e) => e.stopPropagation()}
+                  className={`inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300
+                    ${isActive ? "text-white hover:text-white/70" : "text-gray-700 hover:text-[#0069ff]"}`}
+                >
+                  Read now <ArrowRight className="w-3 h-3" />
+                </Link>
+
+                {/* Decorative blob — small when inactive, expands when active */}
+                <div
+                  className={`absolute transition-all duration-500 rounded-full pointer-events-none
+                    ${r.blobBg}
+                    ${isActive
+                      ? "w-[300px] h-[300px] -bottom-20 -right-20 opacity-30"
+                      : "w-24 h-24 -bottom-6 -right-6 opacity-20"
+                    }`}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
+/* ─────────────── Pricing ─────────────── */
+function Pricing() {
+  const [yearly, setYearly] = useState(true);
+
+  return (
+    <section id="pricing" className="py-20 lg:py-28 bg-[#f8f9ff]">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-12">
+          <p className="text-[#0069ff] text-sm font-semibold tracking-widest uppercase mb-3">Pricing</p>
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a2e] mb-6">
+            Pick the perfect plan<br />for your team
+          </h2>
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="radio" checked={yearly} onChange={() => setYearly(true)} className="accent-[#0069ff]" />
+              <span className="text-sm font-semibold text-gray-700">Billed yearly</span>
+              {yearly && <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Save 16%</span>}
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="radio" checked={!yearly} onChange={() => setYearly(false)} className="accent-[#0069ff]" />
+              <span className="text-sm font-semibold text-gray-700">Billed monthly</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl">
+          <PricingCard
+            name="Free"
+            desc="For personal use"
+            price="Always free"
+            priceNote=""
+            cta="Get started"
+            ctaStyle="dark"
+            features={["1 event type", "Unlimited bookings", "Calendar integrations", "Booking page"]}
+          />
+          <PricingCard
+            name="Standard"
+            desc="For professionals"
+            price={yearly ? "$10" : "$12"}
+            priceNote="/seat/mo"
+            saveBadge={yearly ? "Save 16%" : undefined}
+            cta="Get started"
+            ctaStyle="blue"
+            features={["Unlimited event types", "Everything in Free", "Custom questions", "Buffer times", "Multiple schedules"]}
+          />
+          <PricingCard
+            name="Teams"
+            desc="For growing businesses"
+            price={yearly ? "$16" : "$20"}
+            priceNote="/seat/mo"
+            saveBadge={yearly ? "Save 20%" : undefined}
+            cta="Try for Free"
+            ctaStyle="blue"
+            badge="Recommended plan"
+            features={["Everything in Standard", "Team scheduling", "Round-robin meetings", "Admin management", "Analytics"]}
+          />
+          <PricingCard
+            name="Enterprise"
+            desc="For large companies"
+            price="Starts at $15k"
+            priceNote="/yr"
+            cta="Talk to sales"
+            ctaStyle="blue"
+            features={["Everything in Teams", "SSO integration", "Advanced security", "Custom contracts", "Dedicated support"]}
+          />
+        </div>
+
+        <Link href="/pricing" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-[#0069ff] transition-colors">
+          Learn more on our pricing page <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function PricingCard({ name, desc, price, priceNote, cta, ctaStyle, features, badge, saveBadge }: {
+  name: string; desc: string; price: string; priceNote?: string; cta: string;
+  ctaStyle: "dark" | "blue"; features: string[]; badge?: string; saveBadge?: string;
+}) {
+  return (
+    <div className={`bg-white border rounded-2xl p-7 relative flex flex-col hover:shadow-lg transition-all ${badge ? "border-[#0069ff] shadow-md" : "border-gray-200"}`}>
+      {badge && (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#0069ff] text-white text-xs font-bold px-4 py-1 rounded-full">
+          {badge}
+        </div>
+      )}
+      <p className="text-base font-bold text-[#1a1a2e] mb-1">{name}</p>
+      <p className="text-xs text-gray-500 mb-4">{desc}</p>
+      <div className="flex items-baseline gap-1 mb-1">
+        <span className="text-2xl font-extrabold text-[#1a1a2e]">{price}</span>
+        {priceNote && <span className="text-xs text-gray-400">{priceNote}</span>}
+        {saveBadge && <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full ml-1">{saveBadge}</span>}
+      </div>
+      <Link
+        href="/onboarding"
+        className={`block text-center text-sm font-bold py-3 rounded-lg mt-4 mb-6 transition-all ${
+          ctaStyle === "dark"
+            ? "bg-[#1a1a2e] text-white hover:bg-gray-800"
+            : "bg-[#0069ff] text-white hover:bg-[#0052cc]"
+        }`}
+      >
+        {cta}
+      </Link>
+      <ul className="space-y-2.5 flex-1">
+        {features.map((f) => (
+          <li key={f} className="flex items-start gap-2 text-sm text-gray-700">
+            <Check className="w-4 h-4 text-[#0069ff] shrink-0 mt-0.5" /> {f}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /* ─────────────── CTA ─────────────── */
 function CTA() {
   return (
-    <section className="py-20 lg:py-24 bg-white">
+    <section className="py-20 lg:py-24 bg-[#1a1a2e]">
       <div className="max-w-3xl mx-auto px-6 text-center">
-        <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
+        <h2 className="text-3xl lg:text-4xl font-extrabold text-white mb-4">
           Get started in seconds — for free
         </h2>
-        <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
-          Join thousands of professionals who use Schedulr to simplify their scheduling.
+        <p className="text-lg text-blue-200 mb-8 max-w-xl mx-auto">
+          Join millions of professionals who use Schedulr to simplify their scheduling.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/onboarding"
-            className="inline-flex items-center justify-center gap-2 bg-[#006bff] text-white text-base font-semibold px-8 py-3.5 rounded-full hover:bg-[#0052cc] shadow-lg shadow-blue-200 transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-[#0069ff] text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-blue-500 transition-all"
           >
-            Start for Free
+            Start for free
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             href="/dashboard"
-            className="inline-flex items-center justify-center gap-2 border border-gray-300 text-gray-700 text-base font-semibold px-8 py-3.5 rounded-full hover:bg-gray-50 transition-all"
+            className="inline-flex items-center justify-center gap-2 border border-white/30 text-white text-base font-semibold px-8 py-3.5 rounded-md hover:bg-white/10 transition-all"
           >
-            View Demo
+            View demo
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -566,30 +751,28 @@ function CTA() {
 /* ─────────────── Footer ─────────────── */
 function Footer() {
   return (
-    <footer className="bg-gray-900 py-16">
+    <footer className="bg-white border-t border-gray-100 py-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 bg-[#006bff] rounded-lg flex items-center justify-center">
+        <div className="grid md:grid-cols-5 gap-10 mb-12">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-[#0069ff] rounded-lg flex items-center justify-center">
                 <Calendar className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-bold text-white">Schedulr</span>
+              <span className="text-lg font-bold text-[#1a1a2e]">Schedulr</span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              The modern scheduling platform that makes &quot;finding time&quot; a breeze.
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
+              The modern scheduling platform that makes finding time a breeze for teams of all sizes.
             </p>
           </div>
 
-          {/* Links */}
           {[
             {
               title: "Product",
               links: [
                 { label: "Features", href: "#features" },
                 { label: "Pricing", href: "#pricing" },
-                { label: "Integrations", href: "#" },
+                { label: "Integrations", href: "#integrations" },
                 { label: "Security", href: "#" },
               ],
             },
@@ -613,13 +796,11 @@ function Footer() {
             },
           ].map(({ title, links }) => (
             <div key={title}>
-              <h4 className="text-sm font-bold text-white mb-4">{title}</h4>
+              <h4 className="text-xs font-bold text-[#1a1a2e] mb-4 uppercase tracking-widest">{title}</h4>
               <ul className="space-y-2.5">
                 {links.map(({ label, href }) => (
                   <li key={label}>
-                    <a href={href} className="text-sm text-gray-400 hover:text-white transition-colors">
-                      {label}
-                    </a>
+                    <a href={href} className="text-sm text-gray-500 hover:text-[#0069ff] transition-colors">{label}</a>
                   </li>
                 ))}
               </ul>
@@ -627,14 +808,12 @@ function Footer() {
           ))}
         </div>
 
-        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Schedulr. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-xs text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Status</a>
+        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-gray-400">© {new Date().getFullYear()} Schedulr. All rights reserved.</p>
+          <div className="flex gap-6 text-xs text-gray-400">
+            <a href="#" className="hover:text-[#0069ff] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[#0069ff] transition-colors">Terms</a>
+            <a href="#" className="hover:text-[#0069ff] transition-colors">Status</a>
           </div>
         </div>
       </div>
@@ -645,13 +824,15 @@ function Footer() {
 /* ─────────────── Page ─────────────── */
 export default function HomePage() {
   return (
-    <main>
+    <main className="font-sans">
       <Navbar />
       <Hero />
+      <ValueProps />
       <Features />
       <HowItWorks />
       <Integrations />
       <SocialProof />
+      <CustomerResults />
       <Pricing />
       <CTA />
       <Footer />

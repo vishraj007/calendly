@@ -231,9 +231,9 @@ function EventTypesPageInner() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                A
+                V
               </div>
-              <span className="text-sm font-semibold text-gray-900">Alex Johnson</span>
+              <span className="text-sm font-semibold text-gray-900">Vishal Rawat</span>
             </div>
             {eventTypes[0] && (
               <a
@@ -566,8 +566,8 @@ function SlideOutPanel({
               {/* Host */}
               <SectionRow label="Host" defaultOpen={false}>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">A</div>
-                  Alex Johnson (you)
+                  <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">V</div>
+                  Vishal Rawat (you)
                 </div>
               </SectionRow>
             </div>
@@ -750,8 +750,8 @@ function SlideOutPanel({
               {hostOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
             </button>
             <div className="px-6 pb-4 -mt-1 flex items-center gap-2 text-sm text-gray-600">
-              <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">A</div>
-              Alex Johnson (you)
+              <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">V</div>
+              Vishal Rawat (you)
             </div>
           </div>
         </div>

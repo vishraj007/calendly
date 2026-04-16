@@ -64,7 +64,7 @@ export default function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto px-8 py-10">
       <PageHeader
-        title="Welcome back, Alex 👋"
+        title="Welcome back, Vishal 👋"
         subtitle="Here's what's happening with your schedule."
       />
 

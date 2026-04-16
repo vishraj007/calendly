@@ -7,6 +7,7 @@ export interface TimeSlot {
   endTime: string;
   startTimeUTC: string;
   endTimeUTC: string;
+  available: boolean;
 }
 
 interface GenerateSlotsOptions {
@@ -22,7 +23,7 @@ interface GenerateSlotsOptions {
 
 /**
  * Pure function — no DB calls, fully testable.
- * Generates slots with buffer-aware conflict detection.
+ * Returns ALL slots within the window, marking booked/past ones as unavailable.
  */
 function generateSlots({
   availStart,
@@ -49,25 +50,26 @@ function generateSlots({
     const slotStartUTC = fromZonedTime(cursor,  timezone);
     const slotEndUTC   = fromZonedTime(slotEnd, timezone);
 
-    if (!isBefore(slotStartUTC, now)) {
-      const hasConflict = existingBookings.some((b) => {
-        const bufferedStart = addMinutes(b.startTime, -bufferBefore);
-        const bufferedEnd   = addMinutes(b.endTime,    bufferAfter);
-        return (
-          isBefore(slotStartUTC, bufferedEnd) &&
-          isAfter(slotEndUTC, bufferedStart)
-        );
-      });
+    // Check if slot is in the past
+    const isPast = isBefore(slotStartUTC, now);
 
-      if (!hasConflict) {
-        slots.push({
-          startTime:    format(cursor,  "HH:mm"),
-          endTime:      format(slotEnd, "HH:mm"),
-          startTimeUTC: slotStartUTC.toISOString(),
-          endTimeUTC:   slotEndUTC.toISOString(),
-        });
-      }
-    }
+    // Check if slot conflicts with an existing booking
+    const hasConflict = existingBookings.some((b) => {
+      const bufferedStart = addMinutes(b.startTime, -bufferBefore);
+      const bufferedEnd   = addMinutes(b.endTime,    bufferAfter);
+      return (
+        isBefore(slotStartUTC, bufferedEnd) &&
+        isAfter(slotEndUTC, bufferedStart)
+      );
+    });
+
+    slots.push({
+      startTime:    format(cursor,  "HH:mm"),
+      endTime:      format(slotEnd, "HH:mm"),
+      startTimeUTC: slotStartUTC.toISOString(),
+      endTimeUTC:   slotEndUTC.toISOString(),
+      available:    !isPast && !hasConflict,
+    });
 
     cursor = addMinutes(cursor, durationMin);
   }
